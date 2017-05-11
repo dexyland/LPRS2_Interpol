@@ -156,7 +156,7 @@ BEGIN axi_uartlite
 END
 
 BEGIN my_peripheral
- PARAMETER INSTANCE = my_peripheral_0
+ PARAMETER INSTANCE = interpolCoproc
  PARAMETER HW_VER = 1.00.a
  PARAMETER C_BASEADDR = 0x7de00000
  PARAMETER C_HIGHADDR = 0x7de0ffff
