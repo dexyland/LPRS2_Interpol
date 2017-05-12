@@ -1,5 +1,5 @@
 ------------------------------------------------------------------------------
--- interpol_periph.vhd - entity/architecture pair
+-- battle_city_periph.vhd - entity/architecture pair
 ------------------------------------------------------------------------------
 -- IMPORTANT:
 -- DO NOT MODIFY THIS FILE EXCEPT IN THE DESIGNATED SECTIONS.
@@ -65,6 +65,7 @@ library ieee;
 library interpol_periph_v1_01_a;
 	use interpol_periph_v1_01_a.vga_ctrl;
 	use interpol_periph_v1_01_a.interpol;
+	use interpol_periph_v1_01_a.clk_gen_100MHz;
 
 ------------------------------------------------------------------------------
 -- Entity section
@@ -105,35 +106,13 @@ library interpol_periph_v1_01_a;
 --   S_AXI_AWREADY                -- AXI4LITE slave: Wrte address ready
 ------------------------------------------------------------------------------
 
-entity interpol_periph is
-  generic
-  (
-    -- ADD USER GENERICS BELOW THIS LINE ---------------
-    --USER ports added here
-    -- ADD USER GENERICS ABOVE THIS LINE ---------------
-
-    -- DO NOT EDIT BELOW THIS LINE ---------------------
-    -- Bus protocol parameters, do not add to or delete
-    C_S_AXI_DATA_WIDTH             : integer              := 32;
-    C_S_AXI_ADDR_WIDTH             : integer              := 32;
-    C_S_AXI_MIN_SIZE               : std_logic_vector     := X"000001FF";
-    C_USE_WSTRB                    : integer              := 0;
-    C_DPHASE_TIMEOUT               : integer              := 8;
-    C_BASEADDR                     : std_logic_vector     := X"FFFFFFFF";
-    C_HIGHADDR                     : std_logic_vector     := X"00000000";
-    C_FAMILY                       : string               := "virtex6";
-    C_NUM_REG                      : integer              := 1;
-    C_NUM_MEM                      : integer              := 1;
-    C_SLV_AWIDTH                   : integer              := 32;
-    C_SLV_DWIDTH                   : integer              := 32
-    -- DO NOT EDIT ABOVE THIS LINE ---------------------
-  );
+entity interpol_standalone is
   port
   (
-    -- ADD USER PORTS BELOW THIS LINE ------------------
-		clk_24MHz_i		: in  std_logic; -- TODO Remote this later. Also remove from MPD file.
-		rst_in			: in  std_logic; -- TODO Remote this later. Also remove from MPD file.
-
+		clk_24MHz_i		: in  std_logic;
+		rst_in			: in  std_logic;
+		
+    -- Same as in interpol_periph BELOW THIS LINE ------------------
 		vga_clk_o		: out std_logic;
 		red_o				: out std_logic_vector(7 downto 0);
 		green_o			: out std_logic_vector(7 downto 0);
@@ -142,64 +121,16 @@ entity interpol_periph is
 		h_sync_on		: out std_logic;
 		v_sync_on		: out std_logic;
 		sync_on			: out std_logic;
-		pow_save_on		: out std_logic;
-		
-		interrupt_o		: out std_logic;
-    -- ADD USER PORTS ABOVE THIS LINE ------------------
-
-    -- DO NOT EDIT BELOW THIS LINE ---------------------
-    -- Bus protocol ports, do not add to or delete
-    S_AXI_ACLK                     : in  std_logic;
-    S_AXI_ARESETN                  : in  std_logic;
-    S_AXI_AWADDR                   : in  std_logic_vector(C_S_AXI_ADDR_WIDTH-1 downto 0);
-    S_AXI_AWVALID                  : in  std_logic;
-    S_AXI_WDATA                    : in  std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0);
-    S_AXI_WSTRB                    : in  std_logic_vector((C_S_AXI_DATA_WIDTH/8)-1 downto 0);
-    S_AXI_WVALID                   : in  std_logic;
-    S_AXI_BREADY                   : in  std_logic;
-    S_AXI_ARADDR                   : in  std_logic_vector(C_S_AXI_ADDR_WIDTH-1 downto 0);
-    S_AXI_ARVALID                  : in  std_logic;
-    S_AXI_RREADY                   : in  std_logic;
-    S_AXI_ARREADY                  : out std_logic;
-    S_AXI_RDATA                    : out std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0);
-    S_AXI_RRESP                    : out std_logic_vector(1 downto 0);
-    S_AXI_RVALID                   : out std_logic;
-    S_AXI_WREADY                   : out std_logic;
-    S_AXI_BRESP                    : out std_logic_vector(1 downto 0);
-    S_AXI_BVALID                   : out std_logic;
-    S_AXI_AWREADY                  : out std_logic
-    -- DO NOT EDIT ABOVE THIS LINE ---------------------
+		pow_save_on		: out std_logic
+    -- Same as in inteprol_periph ABOVE THIS LINE ------------------
   );
-
-  attribute MAX_FANOUT : string;
-  attribute SIGIS : string;
-  attribute MAX_FANOUT of S_AXI_ACLK       : signal is "10000";
-  attribute MAX_FANOUT of S_AXI_ARESETN       : signal is "10000";
-  attribute SIGIS of S_AXI_ACLK       : signal is "Clk";
-  attribute SIGIS of S_AXI_ARESETN       : signal is "Rst";
-end entity interpol_periph;
+end entity interpol_standalone;
 
 ------------------------------------------------------------------------------
 -- Architecture section
 ------------------------------------------------------------------------------
 
-architecture IMP of interpol_periph is
-	
-	
-
-	constant BASE_ADDR : signed(C_S_AXI_ADDR_WIDTH-1 downto 0) := signed(C_BASEADDR);
-	subtype t_addr is signed(C_S_AXI_ADDR_WIDTH-1 downto 2);
-	subtype t_word is std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0);
-	
-	
-	signal accept_write     : std_logic;
-	signal r_write_response : std_logic;
-	
-	signal local_write_addr : t_addr;
-	signal write_regs_en    : boolean;
-	signal we_en : std_logic;
-	
-	
+architecture IMP of interpol_standalone is
 	
 	-- Same as in interpol_standalone BELOW THIS LINE ------------------
 	constant ADDR_WIDTH : natural := 13;
@@ -211,26 +142,13 @@ architecture IMP of interpol_periph is
  	signal pixel_x_s				: unsigned(9 downto 0);
 	signal pixel_y_s				: unsigned(8 downto 0);
 	signal phase_s					: unsigned(1 downto 0);
-	
-	signal bus_addr		      : std_logic_vector(ADDR_WIDTH-1 downto 0);
+
+	signal bus_addr		       : std_logic_vector(ADDR_WIDTH-1 downto 0);
 	signal bus_data            : std_logic_vector(31 downto 0);
 	signal bus_we              : std_logic;
 	
 begin
 
--------------  ovo je nas interrupt   ---------------------
-
---process(pixel_y) begin
---	if pixel_y_= "111100000" then
---		interrupt_o	<= '1';
---	else
---		interrupt_o	<= '0';
---	end if;
---	
---end process;
-
--------------------------------------------------------------
-	
 	vga_ctrl_i : entity vga_ctrl
 		port map
 		(
@@ -268,54 +186,20 @@ begin
 			phase_i			=> phase_s,
 			rgb_o				=> rgb_s
 		);
-    -- Same as in interpol_standalone ABOVE THIS LINE ------------------
-
-	clk_100MHz <= S_AXI_ACLK;
-	n_reset <= S_AXI_ARESETN;
-			
-	-- Read transaction.
-
-    S_AXI_ARREADY <= '0';
-    S_AXI_RDATA <= (others => '0');
-    S_AXI_RRESP <= (others => '0');
-    S_AXI_RVALID <= '0';
+    -- Same as in interpol_periph ABOVE THIS LINE ------------------
 	 
-	-- Write transaction.
-	
-	-- When both valid signals are asserted and response is not in progress
-	-- then say valid to master, write data and give response.
-	
-	accept_write <= S_AXI_AWVALID and S_AXI_WVALID and not r_write_response;
-	S_AXI_AWREADY <= accept_write;
-	S_AXI_WREADY <= accept_write;
-	
-	local_write_addr <= signed(S_AXI_AWADDR(t_addr'range)) - BASE_ADDR(t_addr'range);
-	write_regs_en <= accept_write = '1' and local_write_addr(t_addr'left downto ADDR_WIDTH+2) = 0;
-	we_en <= '1' when write_regs_en else '0';
 
-	write_regs: process(S_AXI_ACLK)
-	begin
-		if rising_edge(S_AXI_ACLK) then
-			if S_AXI_ARESETN = '0' then
-				--r_regs <= (others => (others => '0'));
-				r_write_response <= '0';
-			else
-				if accept_write = '1' then
-					r_write_response <= '1';
-				else
-					if S_AXI_BREADY = '1' then
-						r_write_response <= '0';
-					end if;
-				end if;
-			end if;
-		end if;
-	end process write_regs;
+	clk_gen: entity clk_gen_100MHz
+	port map(
+		i_clk_24MHz  => clk_24MHz_i,
+		in_reset     => rst_in,
+		o_clk_100MHz => clk_100MHz,
+		o_locked     => n_reset
+	);
 	
-	S_AXI_BRESP  <= "00"; -- Always OK response.
-	S_AXI_BVALID <= r_write_response;
-	
-	bus_addr <= std_logic_vector(local_write_addr(ADDR_WIDTH+1 downto 2));
-	bus_data <= S_AXI_WDATA;
-	bus_we <= we_en;
 
+	bus_addr <= (others => '0');
+	bus_data <= (others => '0');
+	bus_we <= '0';
+	
 end IMP;

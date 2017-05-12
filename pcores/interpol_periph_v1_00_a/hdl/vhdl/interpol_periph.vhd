@@ -62,9 +62,9 @@ library ieee;
 	use ieee.std_logic_1164.all;
 	use ieee.numeric_std.all;
 
-library interpol_periph_v1_01_a;
-	use interpol_periph_v1_01_a.vga_ctrl;
-	use interpol_periph_v1_01_a.interpol;
+library interpol_periph_v1_00_a;
+	use interpol_periph_v1_00_a.vga_ctrl;
+	use interpol_periph_v1_00_a.interpol;
 
 ------------------------------------------------------------------------------
 -- Entity section
