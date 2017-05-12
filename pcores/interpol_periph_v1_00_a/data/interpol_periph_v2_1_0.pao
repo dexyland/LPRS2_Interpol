@@ -1,0 +1,15 @@
+##############################################################################
+## Filename:          C:/Materijali/RA94-2013/LPRS2/Project/interpol/pcores/interpol_periph_v1_00_a/data/interpol_periph_v2_1_0.pao
+## Description:       Peripheral Analysis Order
+## Date:              Fri May 12 11:12:10 2017 (by Create and Import Peripheral Wizard)
+##############################################################################
+
+lib proc_common_v3_00_a  all 
+lib axi_lite_ipif_v1_01_a  all 
+lib interpol_periph_v1_00_a clk_gen_100MHz_a vhdl
+lib interpol_periph_v1_00_a clk_gen_100MHz_e vhdl
+lib interpol_periph_v1_00_a interpol vhdl
+lib interpol_periph_v1_00_a interpol_periph vhdl
+lib interpol_periph_v1_00_a ram vhdl
+lib interpol_periph_v1_00_a vga_ctrl_a vhdl
+lib interpol_periph_v1_00_a vga_ctrl_e vhdl

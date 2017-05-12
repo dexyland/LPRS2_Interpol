@@ -1,0 +1,9 @@
+-batch 
+-create interpol_periph 
+-ver 1.00.a 
+-dir "C:\Materijali\RA94-2013\LPRS2\Project\interpol" 
+-lang vhdl 
+-bus axi4lite s 
+-reg 16 
+-xps 
+-ise 
