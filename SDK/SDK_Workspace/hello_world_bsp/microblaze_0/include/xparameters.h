@@ -12,8 +12,8 @@
 *
 *******************************************************************/
 
-#define STDIN_BASEADDRESS 0x40600000
-#define STDOUT_BASEADDRESS 0x40600000
+#define STDIN_BASEADDRESS 0x41400000
+#define STDOUT_BASEADDRESS 0x41400000
 
 /******************************************************************/
 
@@ -61,6 +61,14 @@
 #define XPAR_UARTLITE_1_ODD_PARITY 1
 #define XPAR_UARTLITE_1_DATA_BITS 8
 #define XPAR_UARTLITE_1_SIO_CHAN 1
+
+
+/******************************************************************/
+
+
+/* Definitions for peripheral INTERPOL_PERIPH_0 */
+#define XPAR_INTERPOL_PERIPH_0_BASEADDR 0x7E800000
+#define XPAR_INTERPOL_PERIPH_0_HIGHADDR 0x7E80FFFF
 
 
 /******************************************************************/
@@ -135,25 +143,6 @@
 #define XPAR_BRAM_1_WRITE_ACCESS 2
 #define XPAR_BRAM_1_BASEADDR 0x00000000
 #define XPAR_BRAM_1_HIGHADDR 0x00007FFF
-
-
-/******************************************************************/
-
-
-/* Definitions for peripheral MY_PERIPHERAL_0 */
-#define XPAR_MY_PERIPHERAL_0_BASEADDR 0x7DE00000
-#define XPAR_MY_PERIPHERAL_0_HIGHADDR 0x7DE0FFFF
-
-
-/******************************************************************/
-
-/* Definitions for driver VGA_PERIPH_MEM */
-#define XPAR_VGA_PERIPH_MEM_NUM_INSTANCES 1
-
-/* Definitions for peripheral VGA_PERIPH_MEM_0 */
-#define XPAR_VGA_PERIPH_MEM_0_DEVICE_ID 0
-#define XPAR_VGA_PERIPH_MEM_0_S_AXI_MEM0_BASEADDR 0xC0000000
-#define XPAR_VGA_PERIPH_MEM_0_S_AXI_MEM0_HIGHADDR 0xC3FFFFFF
 
 
 /******************************************************************/
