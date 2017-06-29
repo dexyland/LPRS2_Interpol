@@ -1,0 +1,26 @@
+#! /usr/bin/env python
+# encoding: utf-8
+
+'''
+@author: Milos Subotic <milos.subotic.sm@gmail.com>
+@license: MIT
+'''
+
+###############################################################################
+
+def options(opt):
+	pass
+
+def configure(conf):
+	pass
+
+def build(bld):
+	bld.stlib(
+		source = bld.path.ant_glob('src/*.c'),
+		includes = 'include',
+		export_includes = 'include',
+		target = 'interpol'
+	)
+
+###############################################################################
+

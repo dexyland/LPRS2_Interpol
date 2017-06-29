@@ -1,0 +1,50 @@
+#! /usr/bin/env python
+# encoding: utf-8
+
+'''
+@author: Milos Subotic <milos.subotic.sm@gmail.com>
+@license: MIT
+'''
+
+###############################################################################
+
+import waflib
+
+###############################################################################
+
+def options(opt):
+	opt.load('compiler_c')
+
+	opt.add_option(
+		'--debug',
+		action = 'store_true',
+		dest = 'debug',
+		default = False, 
+		help = 'enable compiler debug information'
+	)
+
+	opt.recurse('interpol')
+
+
+def configure(conf):
+	conf.load('compiler_c')
+
+	conf.env.CFLAGS += ['-std=c99']
+
+	if conf.options.debug:
+		conf.env.CFLAGS.append('-g')
+
+	conf.recurse('interpol')
+
+
+def build(bld):
+	bld.program(
+		source = ['main.c'],
+		use = 'interpol',
+		target = 'algo'
+	)
+
+	bld.recurse('interpol')
+
+###############################################################################
+
