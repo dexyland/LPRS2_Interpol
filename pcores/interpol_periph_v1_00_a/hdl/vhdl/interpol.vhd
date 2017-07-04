@@ -1,6 +1,7 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
+--use IEEE.STD_LOGIC_UNSIGNED.all;
 
 entity interpol is
    generic(
@@ -60,22 +61,50 @@ architecture Behavioral of interpol is
    --constant overhead_c     : std_logic_vector( OVERHEAD-1 downto 0 ) := ( others => '0' );
    --constant sprite_z_coor  : unsigned (7 downto 0) := "00000100";
    constant fix_one	 : unsigned (15 downto 0) := "0010000000000000";
-   constant fix_half : unsigned (15 downto 0) := "0001000000000000";
+   constant fix_half  : unsigned (15 downto 0) := "0001000000000000";
 
-   -- Globals --
-   signal registers_s      : registers_t :=                                -- Array representing registers
-   --   row   |    col  |en&size|  rot  | pointer
-   (( x"0130" & x"00e3" & x"8f" & x"00" & x"01FF" ),  --mario
-    ( x"0170" & x"00d5" & x"8f" & x"00" & x"01BF" ),  --enemie
-    ( x"0170" & x"011b" & x"8f" & x"00" & x"01BF" ),
-    ( x"0170" & x"014d" & x"8f" & x"00" & x"01BF" ),
-    ( x"0170" & x"01b1" & x"8f" & x"00" & x"01BF" ),
-    ( x"0130" & x"01c6" & x"8f" & x"00" & x"013f" ),  --coin
-    ( x"0130" & x"01d5" & x"8f" & x"00" & x"013f" ),
-    ( x"0130" & x"01e4" & x"8f" & x"00" & x"013f" ),
-    ( x"0130" & x"01f3" & x"8f" & x"00" & x"013f" ),
-    ( x"0000" & x"0090" & x"7f" & x"00" & x"03d0" )); --brick
+--   -- Globals --
+--   signal registers_s      : registers_t :=                                -- Array representing registers
+--   --   row   |    col  |en&size|  rot  | pointer
+--   (( x"0130" & x"00e3" & x"8f" & x"00" & x"01FF" ),  --mario
+--    ( x"0170" & x"00d5" & x"8f" & x"00" & x"01BF" ),  --enemie
+--    ( x"0170" & x"011b" & x"8f" & x"00" & x"01BF" ),
+--    ( x"0170" & x"014d" & x"8f" & x"00" & x"01BF" ),
+--    ( x"0170" & x"01b1" & x"8f" & x"00" & x"01BF" ),
+--    ( x"0130" & x"01c6" & x"8f" & x"00" & x"013f" ),  --coin
+--    ( x"0130" & x"01d5" & x"8f" & x"00" & x"013f" ),
+--    ( x"0130" & x"01e4" & x"8f" & x"00" & x"013f" ),
+--    ( x"0130" & x"01f3" & x"8f" & x"00" & x"013f" ),
+--    ( x"0000" & x"0090" & x"7f" & x"00" & x"03d0" )); --brick
 
+
+-- Counter for generating addresses --
+	signal src_x : 	std_logic_vector(15 downto 0);
+	signal src_y : 	std_logic_vector(15 downto 0); 
+	signal src_w :  	std_logic_vector(15 downto 0);
+	signal src_h :  	std_logic_vector(15 downto 0);
+	signal dst_x :  	std_logic_vector(15 downto 0);
+	signal dst_y :  	std_logic_vector(15 downto 0);
+	signal dst_w :  	std_logic_vector(15 downto 0);
+	signal dst_h :  	std_logic_vector(15 downto 0);
+	signal zoom_x : 	std_logic_vector(15 downto 0);
+	signal zoom_y : 	std_logic_vector(15 downto 0);
+	
+	signal sx : std_logic_vector(15 downto 0);
+	signal sy : std_logic_vector(15 downto 0);
+	signal py : std_logic_vector(15 downto 0);
+	signal px : std_logic_vector(15 downto 0);
+	
+	signal x : std_logic_vector(31 downto 0);
+	signal y : std_logic_vector(31 downto 0);
+	signal tmp_x : std_logic_vector(31 downto 0);
+	signal tmp_y : std_logic_vector(31 downto 0);
+	signal int_x : std_logic_vector(15 downto 0);
+	signal int_y : std_logic_vector(15 downto 0);
+	signal inc_x : std_logic_vector(7 downto 0);
+	signal inc_y : std_logic_vector(7 downto 0);
+	signal src_mem_width : std_logic_vector(15 downto 0);
+	
 -- Addresses for mux --
 	signal pix_A_addr	: unsigned(ADDR_WIDTH-1 downto 0);
 	signal pix_B_addr	: unsigned(ADDR_WIDTH-1 downto 0);
@@ -107,6 +136,9 @@ architecture Behavioral of interpol is
 	signal pixel_D_blue_r  : std_logic_vector(DATA_WIDTH-1 downto 0);
 	
 -- pixel index value --
+	signal diff_x : std_logic_vector(15 downto 0);
+	signal diff_y : std_logic_vector(15 downto 0);
+	
 	signal index_A_tmp_s : std_logic_vector(31 downto 0);
 	signal index_B_tmp_s : std_logic_vector(31 downto 0);
 	signal index_C_tmp_s : std_logic_vector(31 downto 0);
@@ -173,26 +205,26 @@ architecture Behavioral of interpol is
 	signal pixel_D_multip_blue_r  	  : std_logic_vector(DATA_WIDTH-1 downto 0);
 	
 -- pixel value sums --
-	signal interpol_pix_red_s		  : std_logic-vector(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_green_s		  : std_logic-vector(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_blue_s		  : std_logic-vector(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_red_s		  : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_green_s	  : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_blue_s		  : std_logic_vector(DATA_WIDTH-1 downto 0);
 	
-	signal interpol_pix_red_sR		  : std_logic-vector(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_green_sR	  : std_logic-vector(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_blue_sR		  : std_logic-vector(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_red_sR		  : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_green_sR	  : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_blue_sR	  : std_logic_vector(DATA_WIDTH-1 downto 0);
 
 -- correcting phase --
-	signal interpol_pix_red_r0		  : std_logic-vector(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_green_r0	  : std_logic-vector(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_blue_r0		  : std_logic-vector(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_red_r0		  : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_green_r0	  : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_blue_r0	  : std_logic_vector(DATA_WIDTH-1 downto 0);
 	
-	signal interpol_pix_red_r1		  : std_logic-vector(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_green_r1	  : std_logic-vector(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_blue_r1		  : std_logic-vector(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_red_r1		  : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_green_r1	  : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_blue_r1	  : std_logic_vector(DATA_WIDTH-1 downto 0);
 	
-	signal interpol_pix_red_r2		  : std_logic-vector(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_green_r2	  : std_logic-vector(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_blue_r2		  : std_logic-vector(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_red_r2		  	: std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_green_r2	  	: std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_blue_r2		: std_logic_vector(DATA_WIDTH-1 downto 0);
 	
 --	signal interpol_pix_red_r3		  : std_logic-vector(DATA_WIDTH-1 downto 0);
 --	signal interpol_pix_green_r3	  : std_logic-vector(DATA_WIDTH-1 downto 0);
@@ -207,30 +239,30 @@ begin
     ---------------------
     --     GLOBAL      --
     ---------------------
-	local_addr_s <= signed(bus_addr_i) - C_BASEADDR;
-	reg_word_addr <= signed(local_addr_s) - REGISTER_OFFSET;
-	reg_idx <= reg_word_addr(ADDR_WIDTH-1 downto 1);
-	   process(clk_i) begin
-		  if rising_edge(clk_i) then
-			 if bus_we_i = '1' and 0 <= reg_word_addr and reg_word_addr < REGISTER_NUMBER*2 then
-				if reg_word_addr(0) = '1' then
-						registers_s(to_integer(reg_idx))(63 downto 32) <= unsigned(bus_data_i);
-					else
-						registers_s(to_integer(reg_idx))(31 downto 0) <= unsigned(bus_data_i);
-					end if;
-			 end if;
-		  end if;
-	   end process;
+--	local_addr_s <= signed(bus_addr_i) - C_BASEADDR;
+--	reg_word_addr <= signed(local_addr_s) - REGISTER_OFFSET;
+--	reg_idx <= reg_word_addr(ADDR_WIDTH-1 downto 1);
+--	   process(clk_i) begin
+--		  if rising_edge(clk_i) then
+--			 if bus_we_i = '1' and 0 <= reg_word_addr and reg_word_addr < REGISTER_NUMBER*2 then
+--				if reg_word_addr(0) = '1' then
+--						registers_s(to_integer(reg_idx))(63 downto 32) <= unsigned(bus_data_i);
+--					else
+--						registers_s(to_integer(reg_idx))(31 downto 0) <= unsigned(bus_data_i);
+--					end if;
+--			 end if;
+--		  end if;
+--	   end process;
 	   
 	----------------------
 	--       RAM        --
 	----------------------
 	with phase_i select
 		mem_addr_s <=
-			pix_A_addr	when "00";
-			pix_B_addr	when "01";
-			pix_C_addr	when "10";
-			pix_D_addr	when others;
+			pix_A_addr	when "00",
+			pix_B_addr	when "01",
+			pix_C_addr	when "10",
+			pix_D_addr	when "11";
 			
 	process(clk_i) begin
 		if rising_edge(clk_i) then
@@ -253,8 +285,7 @@ begin
 --	mem_data_red_s <= mem_data_s(31 downto 24);
 --	mem_data_green_s <= mem_data_s(23 downto 16);
 --	mem_data_blue_s <= mem_data_s(15 downto 8);
-
-	process(clk_i, phase_i) begin
+	process(clk_i) begin
 		if rising_edge(clk_i) then
 			case phase_i is
 				when "01" =>
@@ -281,7 +312,7 @@ begin
 	end process;
 	
 ---------------------------------------------
---            RACUNANJE INDEXA             --
+--            RACUNANJE ADRESA             --
 ---------------------------------------------
 
 --	static inline u32 round_fix(u32 num, u8 shift) {
@@ -291,16 +322,46 @@ begin
 
 --#define round_fix_1(num) (((num)+1) >> 1)
 
-	--diff_x <= x and "1111111111111";
-	--diff_y <= y and "1111111111111";
+	process(clk_i)begin
+		if rising_edge(clk_i)then
+			if(phase_i = "00")then
+				sx <= px - dst_x;
+				sy <= py - dst_y;
+				tmp_x <= (src_x + sx)*zoom_x + 1;
+				tmp_y <= (src_y + sy)*zoom_y + 1;
+				
+				x <= '0' & tmp_x(31 downto 1);
+				y <= '0' & tmp_y(31 downto 1);
+				
+				--int_x <= x(28 downto 13);
+				--int_y <= y(28 downto 13);
+
+				diff_x <= "000" & x(12 downto 0);
+				diff_Y <= "000" & x(12 downto 0);
+				
+				int_x <= x(28 downto 13) when x(28 downto 13) < src_w else
+							src_w-1;
+				int_y <= y(28 downto 13) when y(28 downto 13) < src_h else
+							src_h-1;
+							
+				inc_x <= "00000001" when int_x = src_w-1 else "00000000";
+				inc_y <= src_mem_width when int_y = src_h-1 else "00000000";
+				
+--				pix_A_addr <= int_y*src_mem_width + int_x;
+--				pix_B_addr <= int_y*src_mem_width + int_x + inc_x;	
+--				pix_C_addr <= int_y*src_mem_width + int_x + inc_y;
+--				pix_D_addr <= int_y*src_mem_width + int_x + inc_x + inc_y;
+				
+			end if;
+		end if;
+	end process;
 	
-	diff_x <= "000" & x(12 downto 0);
-	diff_Y <= "000" & x(12 downto 0);
+-- RACUNANJE TEZINSKIH KOEFICIJENATA --
 	
-	index_A_tmp_s <= (fix_one - diff_x) * (fix_one - diff_y) + fix_half;
-	index_B_tmp_s <= (fix_one - diff_x) * diff_y + fix_half;
-	index_C_tmp_s <= diff_x * (fix_one - diff_y) + fix_half;
-	index_D_tmp_s <= diff_x * diff_y + fix_half;
+	index_A_tmp_s <= std_logic_vector((fix_one - diff_x) * (fix_one - diff_y) + fix_half);
+	index_B_tmp_s <= std_logic_vector((fix_one - diff_x) * diff_y + fix_half);
+	index_C_tmp_s <= std_logic_vector(diff_x * (fix_one - diff_y) + fix_hal);
+	index_D_tmp_s <= std_logic_vector(diff_x * diff_y + fix_half);
 	
 	index_A_s <= index_A_tmp_s(28 downto 13);
 	index_B_s <= index_B_tmp_s(28 downto 13);
@@ -320,7 +381,7 @@ begin
 		--- mnozenje sa indeksom ---
 --------------------------------------
 --8b.0b * 1b.13b = 8b.13b >> 13 = 8b.0b
-	pixel_A_multip_red_s 	<= pixel_A_red_r   * index_A_r;
+	pixel_A_multip_red_s 	<= std_logic_vector(pixel_A_red_r   * index_A_r);
 	pixel_A_multip_green_s 	<= pixel_A_green_r * index_A_r; 
 	pixel_A_multip_blue_s 	<= pixel_A_blue_r  * index_A_r; 
 	
@@ -382,25 +443,25 @@ begin
 	
 	process(clk_i) begin
 		if rising_edge(clk_i) then
-			interpol_pix_red_r0   <= interp_pix_red_s;
-			interpol_pix_green_r0 <= interp_pix_green_s;
-			interpol_pix_blue_r0  <= interp_pix_blue_s;
+			interpol_pix_red_r0   <= interpol_pix_red_s;
+			interpol_pix_green_r0 <= interpol_pix_green_s;
+			interpol_pix_blue_r0  <= interpol_pix_blue_s;
 		end if;
 	end process;
 	
 	process(clk_i) begin
 		if rising_edge(clk_i) then
-			interpol_pix_red_r1   <= interp_pix_red_r0;
-			interpol_pix_green_r1 <= interp_pix_green_r0;
-			interpol_pix_blue_r1  <= interp_pix_blue_r0;
+			interpol_pix_red_r1   <= interpol_pix_red_r0;
+			interpol_pix_green_r1 <= interpol_pix_green_r0;
+			interpol_pix_blue_r1  <= interpol_pix_blue_r0;
 		end if;
 	end process;
 	
 	process(clk_i) begin
 		if rising_edge(clk_i) then
-			interpol_pix_red_r2   <= interp_pix_red_r1;
-			interpol_pix_green_r2 <= interp_pix_green_r1;
-			interpol_pix_blue_r2  <= interp_pix_blue_r1;
+			interpol_pix_red_r2   <= interpol_pix_red_r1;
+			interpol_pix_green_r2 <= interpol_pix_green_r1;
+			interpol_pix_blue_r2  <= interpol_pix_blue_r1;
 		end if;
 	end process;
 end Behavioral;
