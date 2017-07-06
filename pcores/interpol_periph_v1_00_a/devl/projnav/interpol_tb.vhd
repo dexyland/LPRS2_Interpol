@@ -1,28 +1,30 @@
 -- TestBench Template 
 
-  LIBRARY ieee;
-  USE ieee.std_logic_1164.ALL;
-  USE ieee.numeric_std.ALL;
-
-library interpol_periph_v1_01_a;
-	use interpol_city_periph_v1_01_a.interpol;
-
-  ENTITY testbench IS
-  END testbench;
-
-  ARCHITECTURE behavior OF testbench IS 
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
 
 
+library interpol_periph_v1_00_a;
+	use interpol_periph_v1_00_a.vga_ctrl;
+	use interpol_periph_v1_00_a.interpol;
+
+ENTITY interpol_tb IS
+END interpol_tb;
+
+ARCHITECTURE behavior OF interpol_tb IS 
+
+	constant clk_period : time := 10 ns;
 	signal clk          : std_logic;
 	signal rst_n        : std_logic;
 	signal bus_addr     : std_logic_vector(12 downto 0);  -- Address used to point to registers
 	signal bus_data     : std_logic_vector(31 downto 0);  -- Data to be writed to registers
-	signal we           : std_logic;
+	signal bus_we       : std_logic;
 	signal pixel_row    : unsigned(8 downto 0);
 	signal pixel_col    : unsigned(9 downto 0);
-	signal stage        : unsigned(1 downto 0);
+	signal phase        : unsigned(1 downto 0);
 
-  BEGIN
+BEGIN
   -- Component Instantiation
 	  clk_gen : process
 	  begin
@@ -50,33 +52,58 @@ library interpol_periph_v1_01_a;
 				rst_n_i => rst_n,
 				bus_addr_i => bus_addr, 
 				bus_data_i => bus_data,
-				we_i => we, 
+				bus_we_i => bus_we, 
 				pixel_row_i => pixel_row,
 				pixel_col_i => pixel_col, 
-				stage_i => stage
+				phase_i => phase
 	 );
 
   tb : process	begin
-		
-		rst_n <= '1';
+  
 		pixel_row <= "000000000";
 		pixel_col <= "0000000000";
+		
 		wait for 10 ns;
+		rst_n <= '1';
+		
+		for I in 0 to 400 loop
+		
+			if(I rem 4 = 0)then
+				phase <= "00";
+			else if(I rem 4 = 1)then
+				phase <= "01";
+			else if(I rem 4 = 2)then
+				phase <= "10";
+			else
+				phase <= "11";
+			end if;
+			end if;
+			end if;
+		
+		wait for 10 ns;
+		
+		end loop;
+		
+--		for I in o to 3 loop
+--		if (A = I) then
+--			Z(I) <= '1';
+--		end if;
+--	end loop;
 		
 		
 		bus_addr <= std_logic_vector(to_unsigned(6224, 13));
 		bus_data <= x"babadeda";
-		we <= '1';
-		stage <= "00";
+		bus_we <= '1';
+		phase <= "00";
 		wait for 10 ns;
 		
 		bus_addr <= std_logic_vector(to_unsigned(6224+1, 13));
 		bus_data <= x"deadbeef";
-		we <= '1';
-		stage <= "01";
+		bus_we <= '1';
+		phase <= "01";
 		wait for 10 ns;
 		
-		we <= '0';
+		bus_we <= '0';
 		
 		rst_n <= '0';
 		wait; 

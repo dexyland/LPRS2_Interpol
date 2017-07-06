@@ -1,7 +1,7 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
---use IEEE.STD_LOGIC_UNSIGNED.all;
+use IEEE.STD_LOGIC_UNSIGNED.all;
 
 entity interpol is
    generic(
@@ -79,33 +79,46 @@ architecture Behavioral of interpol is
 
 
 -- Counter for generating addresses --
-	signal src_x : 	std_logic_vector(15 downto 0);
-	signal src_y : 	std_logic_vector(15 downto 0); 
-	signal src_w :  	std_logic_vector(15 downto 0);
-	signal src_h :  	std_logic_vector(15 downto 0);
-	signal dst_x :  	std_logic_vector(15 downto 0);
-	signal dst_y :  	std_logic_vector(15 downto 0);
-	signal dst_w :  	std_logic_vector(15 downto 0);
-	signal dst_h :  	std_logic_vector(15 downto 0);
-	signal zoom_x : 	std_logic_vector(15 downto 0);
-	signal zoom_y : 	std_logic_vector(15 downto 0);
+	signal src_x : 	unsigned(15 downto 0);
+	signal src_y : 	unsigned(15 downto 0); 
+	signal src_w :  	unsigned(15 downto 0);
+	signal src_h :  	unsigned(15 downto 0);
+	signal dst_x :  	unsigned(15 downto 0);
+	signal dst_y :  	unsigned(15 downto 0);
+	signal dst_w :  	unsigned(15 downto 0);
+	signal dst_h :  	unsigned(15 downto 0);
+	signal zoom_x : 	unsigned(15 downto 0);
+	signal zoom_y : 	unsigned(15 downto 0);
 	
-	signal sx : std_logic_vector(15 downto 0);
-	signal sy : std_logic_vector(15 downto 0);
-	signal py : std_logic_vector(15 downto 0);
-	signal px : std_logic_vector(15 downto 0);
+	signal sx : unsigned(15 downto 0);
+	signal sy : unsigned(15 downto 0);
+	signal py : unsigned(15 downto 0);
+	signal px : unsigned(15 downto 0);
 	
-	signal x : std_logic_vector(31 downto 0);
-	signal y : std_logic_vector(31 downto 0);
-	signal tmp_x : std_logic_vector(31 downto 0);
-	signal tmp_y : std_logic_vector(31 downto 0);
-	signal int_x : std_logic_vector(15 downto 0);
-	signal int_y : std_logic_vector(15 downto 0);
-	signal inc_x : std_logic_vector(7 downto 0);
-	signal inc_y : std_logic_vector(7 downto 0);
-	signal src_mem_width : std_logic_vector(15 downto 0);
+	signal x : unsigned(31 downto 0);
+	signal y : unsigned(31 downto 0);
+	
+	signal tmp_x : unsigned(31 downto 0);
+	signal tmp_y : unsigned(31 downto 0);
+	signal tmp0_x : unsigned(31 downto 0);
+	signal tmp0_y : unsigned(31 downto 0);
+	signal tmp1_x : unsigned(31 downto 0);
+	signal tmp1_y : unsigned(31 downto 0);
+	
+	signal int_x : unsigned(15 downto 0);
+	signal int_y : unsigned(15 downto 0);
+	signal inc_x : unsigned(7 downto 0);
+	signal inc_y : unsigned(7 downto 0);
+	signal src_mem_width : unsigned(15 downto 0);
 	
 -- Addresses for mux --
+	signal addr_base  : unsigned(31 downto 0);
+	
+	signal pix_A_addr_tmp : unsigned(ADDR_WIDTH-1 downto 0);
+	signal pix_B_addr_tmp : unsigned(ADDR_WIDTH-1 downto 0);
+	signal pix_C_addr_tmp : unsigned(ADDR_WIDTH-1 downto 0);
+	signal pix_D_addr_tmp : unsigned(ADDR_WIDTH-1 downto 0);
+	
 	signal pix_A_addr	: unsigned(ADDR_WIDTH-1 downto 0);
 	signal pix_B_addr	: unsigned(ADDR_WIDTH-1 downto 0);
 	signal pix_C_addr	: unsigned(ADDR_WIDTH-1 downto 0);
@@ -116,124 +129,140 @@ architecture Behavioral of interpol is
 	signal mem_addr_s   :  unsigned(ADDR_WIDTH-1 downto 0);
 	
 --signal mem_data_r : std_logic_vector(DATA_WIDTH-1 downto 0);--
-	signal mem_data_s : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal mem_data_s : unsigned(DATA_WIDTH-1 downto 0);
 
 -- pixel values (taken from the ram at corresponding phase 'value')-- 
-	signal pixel_A_red_r   : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pixel_A_green_r : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pixel_A_blue_r  : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal pixel_A_red_r   : unsigned(7 downto 0);
+	signal pixel_A_green_r : unsigned(7 downto 0);
+	signal pixel_A_blue_r  : unsigned(7 downto 0);
 	
-	signal pixel_B_red_r   : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pixel_B_green_r : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pixel_B_blue_r  : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal pixel_B_red_r   : unsigned(7 downto 0);
+	signal pixel_B_green_r : unsigned(7 downto 0);
+	signal pixel_B_blue_r  : unsigned(7 downto 0);
 	
-	signal pixel_C_red_r   : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pixel_C_green_r : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pixel_C_blue_r  : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal pixel_C_red_r   : unsigned(7 downto 0);
+	signal pixel_C_green_r : unsigned(7 downto 0);
+	signal pixel_C_blue_r  : unsigned(7 downto 0);
 	
-	signal pixel_D_red_r   : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pixel_D_green_r : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pixel_D_blue_r  : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal pixel_D_red_r   : unsigned(7 downto 0);
+	signal pixel_D_green_r : unsigned(7 downto 0);
+	signal pixel_D_blue_r  : unsigned(7 downto 0);
 	
 -- pixel index value --
-	signal diff_x : std_logic_vector(15 downto 0);
-	signal diff_y : std_logic_vector(15 downto 0);
+	signal diff_x : unsigned(15 downto 0);
+	signal diff_y : unsigned(15 downto 0);
 	
-	signal index_A_tmp_s : std_logic_vector(31 downto 0);
-	signal index_B_tmp_s : std_logic_vector(31 downto 0);
-	signal index_C_tmp_s : std_logic_vector(31 downto 0);
-	signal index_D_tmp_s : std_logic_vector(31 downto 0);
+	signal index_A_tmp_s : unsigned(31 downto 0);
+	signal index_B_tmp_s : unsigned(31 downto 0);
+	signal index_C_tmp_s : unsigned(31 downto 0);
+	signal index_D_tmp_s : unsigned(31 downto 0);
 
-	signal index_A_s : std_logic_vector(15 downto 0); 
-	signal index_B_s : std_logic_vector(15 downto 0); 
-	signal index_C_s : std_logic_vector(15 downto 0);
-	signal index_D_s : std_logic_vector(15 downto 0);
+	signal temp_A_s : unsigned(15 downto 0); 
+	signal temp_B_s : unsigned(15 downto 0); 
+	signal temp_C_s : unsigned(15 downto 0);
+	signal temp_D_s : unsigned(15 downto 0);
 
-	signal index_A_r : std_logic_vector(15 downto 0); 
-	signal index_B_r : std_logic_vector(15 downto 0); 
-	signal index_C_r : std_logic_vector(15 downto 0);
-	signal index_D_r : std_logic_vector(15 downto 0);
+	signal temp_A_r : unsigned(15 downto 0); 
+	signal temp_B_r : unsigned(15 downto 0); 
+	signal temp_C_r : unsigned(15 downto 0);
+	signal temp_D_r : unsigned(15 downto 0);
+	
+	signal temp_1A_s : unsigned(15 downto 0);
+	signal temp_2A_s : unsigned(15 downto 0);
+	signal temp_3A_s : unsigned(15 downto 0);
+	
+	signal temp_1B_s : unsigned(15 downto 0);
+	signal temp_2B_s : unsigned(15 downto 0);
+	signal temp_3B_s : unsigned(15 downto 0);
 
+	signal temp_1C_s : unsigned(15 downto 0);
+	signal temp_2C_s : unsigned(15 downto 0);
+	signal temp_3C_s : unsigned(15 downto 0);
+	
+	signal temp_1D_s : unsigned(15 downto 0);
+	signal temp_2D_s : unsigned(15 downto 0);
+	signal temp_3D_s : unsigned(15 downto 0);
+	
 -- pixel value multip. with index --
-	signal pixel_A_multip_red_s   	  : std_logic_vector(23 downto 0);
-	signal pixel_A_multip_green_s 	  : std_logic_vector(23 downto 0);
-	signal pixel_A_multip_blue_s  	  : std_logic_vector(23 downto 0);
+	signal pixel_A_multip_red_s   	  : unsigned(23 downto 0);
+	signal pixel_A_multip_green_s 	  : unsigned(23 downto 0);
+	signal pixel_A_multip_blue_s  	  : unsigned(23 downto 0);
 	
-	signal pixel_B_multip_red_s   	  : std_logic_vector(23 downto 0);
-	signal pixel_B_multip_green_s 	  : std_logic_vector(23 downto 0);
-	signal pixel_B_multip_blue_s  	  : std_logic_vector(23 downto 0);
+	signal pixel_B_multip_red_s   	  : unsigned(23 downto 0);
+	signal pixel_B_multip_green_s 	  : unsigned(23 downto 0);
+	signal pixel_B_multip_blue_s  	  : unsigned(23 downto 0);
 	
-	signal pixel_C_multip_red_s   	  : std_logic_vector(23 downto 0);
-	signal pixel_C_multip_green_s 	  : std_logic_vector(23 downto 0);
-	signal pixel_C_multip_blue_s  	  : std_logic_vector(23 downto 0);
+	signal pixel_C_multip_red_s   	  : unsigned(23 downto 0);
+	signal pixel_C_multip_green_s 	  : unsigned(23 downto 0);
+	signal pixel_C_multip_blue_s  	  : unsigned(23 downto 0);
 	
-	signal pixel_D_multip_red_s   	  : std_logic_vector(23 downto 0);
-	signal pixel_D_multip_green_s 	  : std_logic_vector(23 downto 0);
-	signal pixel_D_multip_blue_s  	  : std_logic_vector(23 downto 0);
+	signal pixel_D_multip_red_s   	  : unsigned(23 downto 0);
+	signal pixel_D_multip_green_s 	  : unsigned(23 downto 0);
+	signal pixel_D_multip_blue_s  	  : unsigned(23 downto 0);
 	
-	signal pixel_A_multip_red_shift_s   	  : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pixel_A_multip_green_shift_s 	  : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pixel_A_multip_blue_shift_s  	  : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal pixel_A_multip_red_shift_s   	  : unsigned(7 downto 0);
+	signal pixel_A_multip_green_shift_s 	  : unsigned(7 downto 0);
+	signal pixel_A_multip_blue_shift_s  	  : unsigned(7 downto 0);
 	
-	signal pixel_B_multip_red_shift_s   	  : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pixel_B_multip_green_shift_s 	  : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pixel_B_multip_blue_shift_s  	  : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal pixel_B_multip_red_shift_s   	  : unsigned(7 downto 0);
+	signal pixel_B_multip_green_shift_s 	  : unsigned(7 downto 0);
+	signal pixel_B_multip_blue_shift_s  	  : unsigned(7 downto 0);
 	
-	signal pixel_C_multip_red_shift_s   	  : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pixel_C_multip_green_shift_s 	  : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pixel_C_multip_blue_shift_s  	  : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal pixel_C_multip_red_shift_s   	  : unsigned(7 downto 0);
+	signal pixel_C_multip_green_shift_s 	  : unsigned(7 downto 0);
+	signal pixel_C_multip_blue_shift_s  	  : unsigned(7 downto 0);
 	
-	signal pixel_D_multip_red_shift_s   	  : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pixel_D_multip_green_shift_s 	  : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pixel_D_multip_blue_shift_s  	  : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal pixel_D_multip_red_shift_s   	  : unsigned(7 downto 0);
+	signal pixel_D_multip_green_shift_s 	  : unsigned(7 downto 0);
+	signal pixel_D_multip_blue_shift_s  	  : unsigned(7 downto 0);
 	
 -- pixel value multip. with index rep. reg.--
-	signal pixel_A_multip_red_r   	  : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pixel_A_multip_green_r 	  : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pixel_A_multip_blue_r  	  : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal pixel_A_multip_red_r   	  : unsigned(7 downto 0);
+	signal pixel_A_multip_green_r 	  : unsigned(7 downto 0);
+	signal pixel_A_multip_blue_r  	  : unsigned(7 downto 0);
 	
-	signal pixel_B_multip_red_r   	  : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pixel_B_multip_green_r 	  : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pixel_B_multip_blue_r  	  : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal pixel_B_multip_red_r   	  : unsigned(7 downto 0);
+	signal pixel_B_multip_green_r 	  : unsigned(7 downto 0);
+	signal pixel_B_multip_blue_r  	  : unsigned(7 downto 0);
 	
-	signal pixel_C_multip_red_r   	  : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pixel_C_multip_green_r 	  : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pixel_C_multip_blue_r  	  : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal pixel_C_multip_red_r   	  : unsigned(7 downto 0);
+	signal pixel_C_multip_green_r 	  : unsigned(7 downto 0);
+	signal pixel_C_multip_blue_r  	  : unsigned(7 downto 0);
 	
-	signal pixel_D_multip_red_r   	  : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pixel_D_multip_green_r 	  : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pixel_D_multip_blue_r  	  : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal pixel_D_multip_red_r   	  : unsigned(7 downto 0);
+	signal pixel_D_multip_green_r 	  : unsigned(7 downto 0);
+	signal pixel_D_multip_blue_r  	  : unsigned(7 downto 0);
 	
 -- pixel value sums --
-	signal interpol_pix_red_s		  : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_green_s	  : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_blue_s		  : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_red_s		  : unsigned(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_green_s	  : unsigned(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_blue_s		  : unsigned(DATA_WIDTH-1 downto 0);
 	
-	signal interpol_pix_red_sR		  : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_green_sR	  : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_blue_sR	  : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_red_sR		  : unsigned(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_green_sR	  : unsigned(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_blue_sR	  : unsigned(DATA_WIDTH-1 downto 0);
 
 -- correcting phase --
-	signal interpol_pix_red_r0		  : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_green_r0	  : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_blue_r0	  : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_red_r0		  : unsigned(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_green_r0	  : unsigned(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_blue_r0	  : unsigned(DATA_WIDTH-1 downto 0);
 	
-	signal interpol_pix_red_r1		  : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_green_r1	  : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_blue_r1	  : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_red_r1		  : unsigned(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_green_r1	  : unsigned(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_blue_r1	  : unsigned(DATA_WIDTH-1 downto 0);
 	
-	signal interpol_pix_red_r2		  	: std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_green_r2	  	: std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_blue_r2		: std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_red_r2		  	: unsigned(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_green_r2	  	: unsigned(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_blue_r2		: unsigned(DATA_WIDTH-1 downto 0);
 	
 --	signal interpol_pix_red_r3		  : std_logic-vector(DATA_WIDTH-1 downto 0);
 --	signal interpol_pix_green_r3	  : std_logic-vector(DATA_WIDTH-1 downto 0);
 --	signal interpol_pix_blue_r3		  : std_logic-vector(DATA_WIDTH-1 downto 0);
 	
 	--	Output values  --
-	signal o_red	: std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal o_green	: std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal o_blue	: std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal o_red	: unsigned(DATA_WIDTH-1 downto 0);
+	signal o_green	: unsigned(DATA_WIDTH-1 downto 0);
+	signal o_blue	: unsigned(DATA_WIDTH-1 downto 0);
 
 begin
     ---------------------
@@ -262,7 +291,7 @@ begin
 			pix_A_addr	when "00",
 			pix_B_addr	when "01",
 			pix_C_addr	when "10",
-			pix_D_addr	when "11";
+			pix_D_addr	when others;
 			
 	process(clk_i) begin
 		if rising_edge(clk_i) then
@@ -277,7 +306,7 @@ begin
 		i_data		=> bus_data_i,
 		i_we		=> bus_we_i,
 		i_w_addr	=> bus_addr_i,
-		o_data		=> mem_data_s
+		unsigned(o_data)		=> mem_data_s
 	);		
 	
 -- unos odgovarajucih vrednosti iz rama u reg --
@@ -303,7 +332,7 @@ begin
 					pixel_C_green_r <= mem_data_s(23 downto 16); 
 					pixel_C_blue_r  <= mem_data_s(15 downto 8); 
 			
-				when "00" =>
+				when others =>
 					pixel_D_red_r   <= mem_data_s(31 downto 24); 
 					pixel_D_green_r <= mem_data_s(23 downto 16); 
 					pixel_D_blue_r  <= mem_data_s(15 downto 8); 
@@ -322,58 +351,80 @@ begin
 
 --#define round_fix_1(num) (((num)+1) >> 1)
 
-	process(clk_i)begin
-		if rising_edge(clk_i)then
-			if(phase_i = "00")then
-				sx <= px - dst_x;
-				sy <= py - dst_y;
-				tmp_x <= (src_x + sx)*zoom_x + 1;
-				tmp_y <= (src_y + sy)*zoom_y + 1;
+	px <= "000000" & pixel_col_i;
+	py <= "0000000" & pixel_row_i;
+	
+	sx <= px - dst_x;
+	sy <= py - dst_y;
+	
+	tmp0_x <= "0000000000000000" & src_x + sx;  
+	tmp0_y <= "0000000000000000" & src_y + sy;
+	
+	tmp1_x <= tmp0_x * zoom_x;
+	tmp1_y <= tmp0_y * zoom_y;
+	
+	tmp_x <= tmp1_x + 1;
+	tmp_y <= tmp1_y + 1;
 				
-				x <= '0' & tmp_x(31 downto 1);
-				y <= '0' & tmp_y(31 downto 1);
+	x <= '0' & tmp_x(31 downto 1);
+	y <= '0' & tmp_y(31 downto 1);
+	
+	int_x <= x(28 downto 13) when x(28 downto 13) < src_w else
+				src_w-1;
+	int_y <= y(28 downto 13) when y(28 downto 13) < src_h else
+				src_h-1;
+	
+	diff_x <= "000" & x(12 downto 0);
+	diff_Y <= "000" & x(12 downto 0);
 				
-				--int_x <= x(28 downto 13);
-				--int_y <= y(28 downto 13);
-
-				diff_x <= "000" & x(12 downto 0);
-				diff_Y <= "000" & x(12 downto 0);
+	inc_x <= "00000001" when int_x = src_w-1 else "00000000";
+	inc_y <= src_mem_width when int_y = src_h-1 else "00000000";
 				
-				int_x <= x(28 downto 13) when x(28 downto 13) < src_w else
-							src_w-1;
-				int_y <= y(28 downto 13) when y(28 downto 13) < src_h else
-							src_h-1;
-							
-				inc_x <= "00000001" when int_x = src_w-1 else "00000000";
-				inc_y <= src_mem_width when int_y = src_h-1 else "00000000";
-				
---				pix_A_addr <= int_y*src_mem_width + int_x;
---				pix_B_addr <= int_y*src_mem_width + int_x + inc_x;	
---				pix_C_addr <= int_y*src_mem_width + int_x + inc_y;
---				pix_D_addr <= int_y*src_mem_width + int_x + inc_x + inc_y;
-				
-			end if;
-		end if;
-	end process;
+	addr_base <= int_y*src_mem_width;
+	
+	pix_A_addr_tmp <= addr_base + int_x;
+	pix_B_addr_tmp <= addr_base + int_x + inc_x;	
+	pix_C_addr_tmp <= addr_base + int_x + inc_y;
+	pix_D_addr_tmp <= addr_base + int_x + inc_x + inc_y;
+	
+	pix_A_addr <= pix_A_addr_tmp(ADDR_WIDTH-1 downto 0);
+	pix_B_addr <= pix_B_addr_tmp(ADDR_WIDTH-1 downto 0);
+	pix_C_addr <= pix_C_addr_tmp(ADDR_WIDTH-1 downto 0);
+	pix_D_addr <= pix_D_addr_tmp(ADDR_WIDTH-1 downto 0);
 	
 -- RACUNANJE TEZINSKIH KOEFICIJENATA --
 	
-	index_A_tmp_s <= std_logic_vector((fix_one - diff_x) * (fix_one - diff_y) + fix_half);
-	index_B_tmp_s <= std_logic_vector((fix_one - diff_x) * diff_y + fix_half);
-	index_C_tmp_s <= std_logic_vector(diff_x * (fix_one - diff_y) + fix_hal);
-	index_D_tmp_s <= std_logic_vector(diff_x * diff_y + fix_half);
+	temp_1A_s <= unsigned(fix_one) - diff_x;
+	temp_2A_s <= unsigned(fix_one) - diff_y;
+	temp_3A_s <= temp_1A_s * temp_2A_s;
+	index_A_tmp_s <= temp_3A_s + unsigned(fix_half);
 	
-	index_A_s <= index_A_tmp_s(28 downto 13);
-	index_B_s <= index_B_tmp_s(28 downto 13);
-	index_C_s <= index_C_tmp_s(28 downto 13);
-	index_D_s <= index_D_tmp_s(28 downto 13);
+	temp_1B_s <= unsigned(fix_one) - diff_x;
+	temp_2B_s <= diff_y;
+	temp_3B_s <= temp_1B_s * temp_2B_s;
+	index_B_tmp_s <= temp_3B_s + unsigned(fix_half);
+	
+	temp_1C_s <= diff_x;
+	temp_2C_s <= unsigned(fix_one) - diff_y;
+	temp_3C_s <= temp_1C_s * temp_2C_s;
+	index_C_tmp_s <= temp_3C_s + unsigned(fix_half);
+	
+	temp_1D_s <= diff_x;
+	temp_2D_s <= diff_y;
+	temp_3D_s <= temp_1D_s * temp_2D_s;
+	index_D_tmp_s <= temp_3D_s + unsigned(fix_half);
+	
+	temp_A_s <= index_A_tmp_s(28 downto 13);
+	temp_B_s <= index_B_tmp_s(28 downto 13);
+	temp_C_s <= index_C_tmp_s(28 downto 13);
+	temp_D_s <= index_D_tmp_s(28 downto 13);
 	
 	process(clk_i) begin
 		if rising_edge(clk_i) then
-			index_A_r <= index_A_s;
-			index_B_r <= index_B_s;
-			index_C_r <= index_C_s;
-			index_D_r <= index_D_s;
+			temp_A_r <= temp_A_s;
+			temp_B_r <= temp_B_s;
+			temp_C_r <= temp_C_s;
+			temp_D_r <= temp_D_s;
 		end if;
 	end process;
 			
@@ -381,36 +432,36 @@ begin
 		--- mnozenje sa indeksom ---
 --------------------------------------
 --8b.0b * 1b.13b = 8b.13b >> 13 = 8b.0b
-	pixel_A_multip_red_s 	<= std_logic_vector(pixel_A_red_r   * index_A_r);
-	pixel_A_multip_green_s 	<= pixel_A_green_r * index_A_r; 
-	pixel_A_multip_blue_s 	<= pixel_A_blue_r  * index_A_r; 
+	pixel_A_multip_red_s 	<= pixel_A_red_r   * temp_A_r;
+	pixel_A_multip_green_s 	<= pixel_A_green_r * temp_A_r; 
+	pixel_A_multip_blue_s 	<= pixel_A_blue_r  * temp_A_r; 
 	
-	pixel_B_multip_red_s 	<= pixel_B_red_r   * index_B_r;   
-	pixel_B_multip_green_s 	<= pixel_B_green_r * index_B_r; 
-	pixel_B_multip_blue_s 	<= pixel_B_blue_r  * index_B_r;  
+	pixel_B_multip_red_s 	<= pixel_B_red_r   * temp_B_r;   
+	pixel_B_multip_green_s 	<= pixel_B_green_r * temp_B_r; 
+	pixel_B_multip_blue_s 	<= pixel_B_blue_r  * temp_B_r;  
 	
-	pixel_C_multip_red_s 	<= pixel_C_red_r   * index_C_r;   
-	pixel_C_multip_green_s 	<= pixel_C_green_r * index_C_r; 
-	pixel_C_multip_blue_s 	<= pixel_C_blue_r  * index_C_r;  
+	pixel_C_multip_red_s 	<= pixel_C_red_r   * temp_C_r;   
+	pixel_C_multip_green_s 	<= pixel_C_green_r * temp_C_r; 
+	pixel_C_multip_blue_s 	<= pixel_C_blue_r  * temp_C_r;  
 	
-	pixel_D_multip_red_s  	<= pixel_D_red_r   * index_D_r;  
-	pixel_D_multip_green_s  <= pixel_D_green_r * index_D_r;
-	pixel_D_multip_blue_s  	<= pixel_D_blue_r  * index_D_r; 
+	pixel_D_multip_red_s  	<= pixel_D_red_r   * temp_D_r;  
+	pixel_D_multip_green_s  <= pixel_D_green_r * temp_D_r;
+	pixel_D_multip_blue_s  	<= pixel_D_blue_r  * temp_D_r; 
 	
-	pixel_A_multip_red_shift_s 		<= pixel_A_multip_red_s(20 downto 13);
+	pixel_A_multip_red_shift_s 	<= pixel_A_multip_red_s(20 downto 13);
 	pixel_A_multip_green_shift_s 	<= pixel_A_multip_green_s(20 downto 13);
 	pixel_A_multip_blue_shift_s 	<= pixel_A_multip_blue_s(20 downto 13);
 	
-	pixel_B_multip_red_shift_s 		<= pixel_B_multip_red_s(20 downto 13);
+	pixel_B_multip_red_shift_s 	<= pixel_B_multip_red_s(20 downto 13);
 	pixel_B_multip_green_shift_s 	<= pixel_B_multip_green_s(20 downto 13);
 	pixel_B_multip_blue_shift_s 	<= pixel_B_multip_blue_s(20 downto 13);
 	
-	pixel_C_multip_red_shift_s 		<= pixel_C_multip_red_s(20 downto 13);
+	pixel_C_multip_red_shift_s 	<= pixel_C_multip_red_s(20 downto 13);
 	pixel_C_multip_green_shift_s 	<= pixel_C_multip_green_s(20 downto 13);
 	pixel_C_multip_blue_shift_s 	<= pixel_C_multip_blue_s(20 downto 13);
 	
 	pixel_D_multip_red_shift_s  	<= pixel_D_multip_red_s(20 downto 13);
-	pixel_D_multip_green_shift_s  	<= pixel_D_multip_green_s(20 downto 13);
+	pixel_D_multip_green_shift_s  <= pixel_D_multip_green_s(20 downto 13);
 	pixel_D_multip_blue_shift_s  	<= pixel_D_multip_blue_s(20 downto 13);
 
 	process(clk_i) begin
