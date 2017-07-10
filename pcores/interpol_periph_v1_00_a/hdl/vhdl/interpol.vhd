@@ -40,10 +40,10 @@ architecture Behavioral of interpol is
    (
 		i_clk    : in  std_logic;
 		i_r_addr : in  std_logic_vector(ADDR_WIDTH-1 downto 0);
-		i_data   : in  std_logic_vector(DATA_WIDTH-1 downto 0);
+		i_data   : in  std_logic_vector(31 downto 0);
 		i_we     : in  std_logic;
 		i_w_addr : in  std_logic_vector(ADDR_WIDTH-1 downto 0);
-		o_data   : out std_logic_vector(DATA_WIDTH-1 downto 0)
+		o_data   : out std_logic_vector(31 downto 0)
    );
    end component ram;
 
@@ -78,7 +78,7 @@ architecture Behavioral of interpol is
 --    ( x"0000" & x"0090" & x"7f" & x"00" & x"03d0" )); --brick
 
 
--- Counter for generating addresses --
+
 	signal src_x : 	unsigned(15 downto 0);
 	signal src_y : 	unsigned(15 downto 0); 
 	signal src_w :  	unsigned(15 downto 0);
@@ -100,8 +100,8 @@ architecture Behavioral of interpol is
 	
 	signal tmp_x : unsigned(31 downto 0);
 	signal tmp_y : unsigned(31 downto 0);
-	signal tmp0_x : unsigned(31 downto 0);
-	signal tmp0_y : unsigned(31 downto 0);
+	signal tmp0_x : unsigned(15 downto 0);
+	signal tmp0_y : unsigned(15 downto 0);
 	signal tmp1_x : unsigned(31 downto 0);
 	signal tmp1_y : unsigned(31 downto 0);
 	
@@ -114,10 +114,10 @@ architecture Behavioral of interpol is
 -- Addresses for mux --
 	signal addr_base  : unsigned(31 downto 0);
 	
-	signal pix_A_addr_tmp : unsigned(ADDR_WIDTH-1 downto 0);
-	signal pix_B_addr_tmp : unsigned(ADDR_WIDTH-1 downto 0);
-	signal pix_C_addr_tmp : unsigned(ADDR_WIDTH-1 downto 0);
-	signal pix_D_addr_tmp : unsigned(ADDR_WIDTH-1 downto 0);
+	signal pix_A_addr_tmp : unsigned(31 downto 0);
+	signal pix_B_addr_tmp : unsigned(31 downto 0);
+	signal pix_C_addr_tmp : unsigned(31 downto 0);
+	signal pix_D_addr_tmp : unsigned(31 downto 0);
 	
 	signal pix_A_addr	: unsigned(ADDR_WIDTH-1 downto 0);
 	signal pix_B_addr	: unsigned(ADDR_WIDTH-1 downto 0);
@@ -169,19 +169,19 @@ architecture Behavioral of interpol is
 	
 	signal temp_1A_s : unsigned(15 downto 0);
 	signal temp_2A_s : unsigned(15 downto 0);
-	signal temp_3A_s : unsigned(15 downto 0);
+	signal temp_3A_s : unsigned(31 downto 0);
 	
 	signal temp_1B_s : unsigned(15 downto 0);
 	signal temp_2B_s : unsigned(15 downto 0);
-	signal temp_3B_s : unsigned(15 downto 0);
+	signal temp_3B_s : unsigned(31 downto 0);
 
 	signal temp_1C_s : unsigned(15 downto 0);
 	signal temp_2C_s : unsigned(15 downto 0);
-	signal temp_3C_s : unsigned(15 downto 0);
+	signal temp_3C_s : unsigned(31 downto 0);
 	
 	signal temp_1D_s : unsigned(15 downto 0);
 	signal temp_2D_s : unsigned(15 downto 0);
-	signal temp_3D_s : unsigned(15 downto 0);
+	signal temp_3D_s : unsigned(31 downto 0);
 	
 -- pixel value multip. with index --
 	signal pixel_A_multip_red_s   	  : unsigned(23 downto 0);
@@ -234,35 +234,35 @@ architecture Behavioral of interpol is
 	signal pixel_D_multip_blue_r  	  : unsigned(7 downto 0);
 	
 -- pixel value sums --
-	signal interpol_pix_red_s		  : unsigned(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_green_s	  : unsigned(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_blue_s		  : unsigned(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_red_s		  : unsigned(7 downto 0);
+	signal interpol_pix_green_s	  : unsigned(7 downto 0);
+	signal interpol_pix_blue_s		  : unsigned(7 downto 0);
 	
-	signal interpol_pix_red_sR		  : unsigned(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_green_sR	  : unsigned(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_blue_sR	  : unsigned(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_red_sR		  : unsigned(7 downto 0);
+	signal interpol_pix_green_sR	  : unsigned(7 downto 0);
+	signal interpol_pix_blue_sR	  : unsigned(7 downto 0);
 
 -- correcting phase --
-	signal interpol_pix_red_r0		  : unsigned(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_green_r0	  : unsigned(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_blue_r0	  : unsigned(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_red_r0		  : unsigned(7 downto 0);
+	signal interpol_pix_green_r0	  : unsigned(7 downto 0);
+	signal interpol_pix_blue_r0	  : unsigned(7 downto 0);
 	
-	signal interpol_pix_red_r1		  : unsigned(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_green_r1	  : unsigned(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_blue_r1	  : unsigned(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_red_r1		  : unsigned(7 downto 0);
+	signal interpol_pix_green_r1	  : unsigned(7 downto 0);
+	signal interpol_pix_blue_r1	  : unsigned(7 downto 0);
 	
-	signal interpol_pix_red_r2		  	: unsigned(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_green_r2	  	: unsigned(DATA_WIDTH-1 downto 0);
-	signal interpol_pix_blue_r2		: unsigned(DATA_WIDTH-1 downto 0);
+	signal interpol_pix_red_r2		  	: unsigned(7 downto 0);
+	signal interpol_pix_green_r2	  	: unsigned(7 downto 0);
+	signal interpol_pix_blue_r2		: unsigned(7 downto 0);
 	
 --	signal interpol_pix_red_r3		  : std_logic-vector(DATA_WIDTH-1 downto 0);
 --	signal interpol_pix_green_r3	  : std_logic-vector(DATA_WIDTH-1 downto 0);
 --	signal interpol_pix_blue_r3		  : std_logic-vector(DATA_WIDTH-1 downto 0);
 	
 	--	Output values  --
-	signal o_red	: unsigned(DATA_WIDTH-1 downto 0);
-	signal o_green	: unsigned(DATA_WIDTH-1 downto 0);
-	signal o_blue	: unsigned(DATA_WIDTH-1 downto 0);
+	signal o_red	: unsigned(7 downto 0);
+	signal o_green	: unsigned(7 downto 0);
+	signal o_blue	: unsigned(7 downto 0);
 
 begin
     ---------------------
@@ -286,6 +286,26 @@ begin
 	----------------------
 	--       RAM        --
 	----------------------
+	-- debug stuff --
+	
+	process(clk_i, rst_n_i)begin
+		if rising_edge(clk_i)then
+			if(rst_n_i = '0')then
+				src_x  <= "0000000000000000";
+				src_y  <= "0000000000000000";
+				src_w  <= "0000000000000100";
+				src_h  <= "0000000000000100";
+				dst_x  <= "0000000000000000";
+				dst_y  <= "0000000000000000";
+				dst_w  <= "0000000000000100";
+				dst_h  <= "0000000000000100";
+				zoom_x <= "0000000000000001";
+				zoom_y <= "0000000000000001";
+				addr_base <= "00000000000000000000000000000000";
+			end if;
+		end if;
+	end process;
+	
 	with phase_i select
 		mem_addr_s <=
 			pix_A_addr	when "00",
@@ -320,7 +340,7 @@ begin
 				when "01" =>
 					pixel_A_red_r   <= mem_data_s(31 downto 24); 
 					pixel_A_green_r <= mem_data_s(23 downto 16); 
-					pixel_A_blue_r  <= mem_data_s(15 downto 8); 
+					pixel_A_blue_r  <= mem_data_s(15 downto 8);
 					
 				when "10" =>
 					pixel_B_red_r   <= mem_data_s(31 downto 24); 
@@ -357,8 +377,8 @@ begin
 	sx <= px - dst_x;
 	sy <= py - dst_y;
 	
-	tmp0_x <= "0000000000000000" & src_x + sx;  
-	tmp0_y <= "0000000000000000" & src_y + sy;
+	tmp0_x <= src_x + sx;  
+	tmp0_y <= src_y + sy;
 	
 	tmp1_x <= tmp0_x * zoom_x;
 	tmp1_y <= tmp0_y * zoom_y;
@@ -515,4 +535,8 @@ begin
 			interpol_pix_blue_r2  <= interpol_pix_blue_r1;
 		end if;
 	end process;
+	
+	o_red	  <= interpol_pix_red_r2;
+	o_green <= interpol_pix_green_r2;
+	o_blue  <= interpol_pix_blue_r2;
 end Behavioral;

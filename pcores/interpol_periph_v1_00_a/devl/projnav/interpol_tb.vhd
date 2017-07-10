@@ -60,52 +60,161 @@ BEGIN
 
   tb : process	begin
   
+		rst_n <= '0';
+		wait for 10 ns;
+  
+		rst_n <= '1';
+		
+		phase <= "00";
 		pixel_row <= "000000000";
 		pixel_col <= "0000000000";
 		
 		wait for 10 ns;
-		rst_n <= '1';
 		
-		for I in 0 to 400 loop
-		
-			if(I rem 4 = 0)then
-				phase <= "00";
-			else if(I rem 4 = 1)then
-				phase <= "01";
-			else if(I rem 4 = 2)then
-				phase <= "10";
-			else
-				phase <= "11";
-			end if;
-			end if;
-			end if;
-		
-		wait for 10 ns;
-		
-		end loop;
-		
---		for I in o to 3 loop
---		if (A = I) then
---			Z(I) <= '1';
---		end if;
---	end loop;
-		
-		
-		bus_addr <= std_logic_vector(to_unsigned(6224, 13));
-		bus_data <= x"babadeda";
-		bus_we <= '1';
-		phase <= "00";
-		wait for 10 ns;
-		
-		bus_addr <= std_logic_vector(to_unsigned(6224+1, 13));
-		bus_data <= x"deadbeef";
-		bus_we <= '1';
 		phase <= "01";
+		pixel_row <= "000000000";
+		pixel_col <= "0000000001";
+		
 		wait for 10 ns;
 		
-		bus_we <= '0';
+		phase <= "10";
+		pixel_row <= "000000001";
+		pixel_col <= "0000000000";
 		
-		rst_n <= '0';
+		wait for 10 ns;
+		
+		phase <= "11";
+		pixel_row <= "000000001";
+		pixel_col <= "0000000001";
+		
+		wait for 10 ns;
+		
+		phase <= "00";
+		
+		wait for 10 ns;
+		
+		phase <= "01";
+		
+		wait for 10 ns;
+		
+		phase <= "10";
+		
+		wait for 10 ns;
+		
+		phase <= "11";
+		
+			wait for 10 ns;
+		
+		phase <= "00";
+		
+		wait for 10 ns;
+		
+		phase <= "01";
+		
+		wait for 10 ns;
+		
+		phase <= "10";
+		
+		wait for 10 ns;
+		
+		phase <= "11";
+		
+			wait for 10 ns;
+		
+		phase <= "00";
+		
+		wait for 10 ns;
+		
+		phase <= "01";
+		
+		wait for 10 ns;
+		
+		phase <= "10";
+		
+		wait for 10 ns;
+		
+		phase <= "11";
+		
+			wait for 10 ns;
+		
+		phase <= "00";
+		
+		wait for 10 ns;
+		
+		phase <= "01";
+		
+		wait for 10 ns;
+		
+		phase <= "10";
+		
+		wait for 10 ns;
+		
+		phase <= "11";
+		
+			wait for 10 ns;
+		
+		phase <= "00";
+		
+		wait for 10 ns;
+		
+		phase <= "01";
+		
+		wait for 10 ns;
+		
+		phase <= "10";
+		
+		wait for 10 ns;
+		
+		phase <= "11";
+		
+			wait for 10 ns;
+		
+		phase <= "00";
+		
+		wait for 10 ns;
+		
+		phase <= "01";
+		
+		wait for 10 ns;
+		
+		phase <= "10";
+		
+		wait for 10 ns;
+		
+		phase <= "11";
+		
+			wait for 10 ns;
+		
+		phase <= "00";
+		
+		wait for 10 ns;
+		
+		phase <= "01";
+		
+		wait for 10 ns;
+		
+		phase <= "10";
+		
+		wait for 10 ns;
+		
+		phase <= "11";
+		
+		wait for 10 ns;
+		
+		phase <= "00";
+		
+		wait for 10 ns;
+		
+		phase <= "01";
+		
+		wait for 10 ns;
+		
+		phase <= "10";
+		
+		wait for 10 ns;
+		
+		phase <= "11";
+		
 		wait; 
 	end process tb;
 	

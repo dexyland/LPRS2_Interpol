@@ -27,6 +27,8 @@
     <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="interpol.prj"/>
     <file xil_pn:fileType="FILE_XST_STX" xil_pn:name="interpol.stx"/>
     <file xil_pn:fileType="FILE_XST" xil_pn:name="interpol.xst"/>
+    <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_ISIM_EXE" xil_pn:name="interpol_isim_beh.exe"/>
+    <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="interpol_stx_beh.prj"/>
     <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="interpol_tb_beh.prj"/>
     <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_ISIM_EXE" xil_pn:name="interpol_tb_isim_beh.exe"/>
     <file xil_pn:fileType="FILE_ISIM_MISC" xil_pn:name="interpol_tb_isim_beh.wdb"/>
@@ -43,7 +45,7 @@
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1499340983" xil_pn:in_ck="215700232377138414" xil_pn:name="TRAN_copyAbstractToPostAbstractSimulation" xil_pn:start_ts="1499340983">
+    <transform xil_pn:end_ts="1499679308" xil_pn:in_ck="215700232377138414" xil_pn:name="TRAN_copyAbstractToPostAbstractSimulation" xil_pn:start_ts="1499679308">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
       <outfile xil_pn:name="../../hdl/vhdl/clk_gen_100MHz_a.vhd"/>
@@ -56,11 +58,11 @@
       <outfile xil_pn:name="interpol_standalone.vhd"/>
       <outfile xil_pn:name="interpol_tb.vhd"/>
     </transform>
-    <transform xil_pn:end_ts="1499339178" xil_pn:name="TRAN_xawsToSimhdl" xil_pn:prop_ck="4529801073779870338" xil_pn:start_ts="1499339178">
+    <transform xil_pn:end_ts="1499676835" xil_pn:name="TRAN_xawsToSimhdl" xil_pn:prop_ck="4529801073779870338" xil_pn:start_ts="1499676835">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1499339178" xil_pn:name="TRAN_schematicsToHdlSim" xil_pn:prop_ck="-5273727757501077952" xil_pn:start_ts="1499339178">
+    <transform xil_pn:end_ts="1499676835" xil_pn:name="TRAN_schematicsToHdlSim" xil_pn:prop_ck="-5273727757501077952" xil_pn:start_ts="1499676835">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
@@ -68,7 +70,7 @@
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1499340983" xil_pn:in_ck="215700232377138414" xil_pn:name="TRAN_copyPostAbstractToPreSimulation" xil_pn:start_ts="1499340983">
+    <transform xil_pn:end_ts="1499679313" xil_pn:in_ck="215700232377138414" xil_pn:name="TRAN_copyPostAbstractToPreSimulation" xil_pn:start_ts="1499679313">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
       <outfile xil_pn:name="../../hdl/vhdl/clk_gen_100MHz_a.vhd"/>
@@ -81,11 +83,9 @@
       <outfile xil_pn:name="interpol_standalone.vhd"/>
       <outfile xil_pn:name="interpol_tb.vhd"/>
     </transform>
-    <transform xil_pn:end_ts="1499340986" xil_pn:in_ck="215700232377138414" xil_pn:name="TRAN_ISimulateBehavioralModelRunFuse" xil_pn:prop_ck="-1387662679925437232" xil_pn:start_ts="1499340983">
+    <transform xil_pn:end_ts="1499679316" xil_pn:in_ck="215700232377138414" xil_pn:name="TRAN_ISimulateBehavioralModelRunFuse" xil_pn:prop_ck="-1387662679925437232" xil_pn:start_ts="1499679313">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
-      <status xil_pn:value="OutOfDateForOutputs"/>
-      <status xil_pn:value="OutputChanged"/>
       <outfile xil_pn:name="fuse.log"/>
       <outfile xil_pn:name="interpol_tb_beh.prj"/>
       <outfile xil_pn:name="interpol_tb_isim_beh.exe"/>
@@ -93,7 +93,7 @@
       <outfile xil_pn:name="isim.log"/>
       <outfile xil_pn:name="xilinxsim.ini"/>
     </transform>
-    <transform xil_pn:end_ts="1499341093" xil_pn:in_ck="4700560463656720657" xil_pn:name="TRAN_ISimulateBehavioralModel" xil_pn:prop_ck="-6155366650552787843" xil_pn:start_ts="1499341093">
+    <transform xil_pn:end_ts="1499679316" xil_pn:in_ck="-6316529656211940435" xil_pn:name="TRAN_ISimulateBehavioralModel" xil_pn:prop_ck="-6155366650552787843" xil_pn:start_ts="1499679316">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
       <outfile xil_pn:name="interpol_tb_isim_beh.wdb"/>
