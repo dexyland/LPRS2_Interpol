@@ -264,6 +264,8 @@ architecture Behavioral of interpol is
 	signal o_green	: unsigned(7 downto 0);
 	signal o_blue	: unsigned(7 downto 0);
 
+	signal test_signal : unsigned(31 downto 0);
+	
 begin
     ---------------------
     --     GLOBAL      --
@@ -291,17 +293,17 @@ begin
 	process(clk_i, rst_n_i)begin
 		if rising_edge(clk_i)then
 			if(rst_n_i = '0')then
+			   src_mem_width <= "0000000000000010";
 				src_x  <= "0000000000000000";
 				src_y  <= "0000000000000000";
-				src_w  <= "0000000000000100";
-				src_h  <= "0000000000000100";
+				src_w  <= "0000000000000010";
+				src_h  <= "0000000000000010";
 				dst_x  <= "0000000000000000";
 				dst_y  <= "0000000000000000";
-				dst_w  <= "0000000000000100";
-				dst_h  <= "0000000000000100";
-				zoom_x <= "0000000000000001";
-				zoom_y <= "0000000000000001";
-				addr_base <= "00000000000000000000000000000000";
+				dst_w  <= "0000000000000010";
+				dst_h  <= "0000000000000010";
+				zoom_x <= "0100000000000000";
+				zoom_y <= "0100000000000000";
 			end if;
 		end if;
 	end process;
@@ -321,12 +323,12 @@ begin
 	
 	ram_i : ram
 	port map(
-		i_clk		=> clk_i,
-		i_r_addr	=> std_logic_vector(mem_addr_r), 
-		i_data		=> bus_data_i,
-		i_we		=> bus_we_i,
-		i_w_addr	=> bus_addr_i,
-		unsigned(o_data)		=> mem_data_s
+		i_clk					=> clk_i,
+		i_r_addr				=> std_logic_vector(mem_addr_r), 
+		i_data				=> bus_data_i,
+		i_we					=> bus_we_i,
+		i_w_addr				=> bus_addr_i,
+		unsigned(o_data)	=> mem_data_s
 	);		
 	
 -- unos odgovarajucih vrednosti iz rama u reg --
@@ -338,24 +340,24 @@ begin
 		if rising_edge(clk_i) then
 			case phase_i is
 				when "01" =>
-					pixel_A_red_r   <= mem_data_s(31 downto 24); 
-					pixel_A_green_r <= mem_data_s(23 downto 16); 
-					pixel_A_blue_r  <= mem_data_s(15 downto 8);
+					pixel_A_red_r   <= mem_data_s(23 downto 16); 
+					pixel_A_green_r <= mem_data_s(15 downto 8); 
+					pixel_A_blue_r  <= mem_data_s(7  downto 0);
 					
 				when "10" =>
-					pixel_B_red_r   <= mem_data_s(31 downto 24); 
-					pixel_B_green_r <= mem_data_s(23 downto 16); 
-					pixel_B_blue_r  <= mem_data_s(15 downto 8); 
+					pixel_B_red_r   <= mem_data_s(23 downto 16); 
+					pixel_B_green_r <= mem_data_s(15 downto 8); 
+					pixel_B_blue_r  <= mem_data_s(7  downto 0); 
 					
 				when "11" =>
-					pixel_C_red_r   <= mem_data_s(31 downto 24); 
-					pixel_C_green_r <= mem_data_s(23 downto 16); 
-					pixel_C_blue_r  <= mem_data_s(15 downto 8); 
+					pixel_C_red_r   <= mem_data_s(23 downto 16); 
+					pixel_C_green_r <= mem_data_s(15 downto 8); 
+					pixel_C_blue_r  <= mem_data_s(7  downto 0); 
 			
 				when others =>
-					pixel_D_red_r   <= mem_data_s(31 downto 24); 
-					pixel_D_green_r <= mem_data_s(23 downto 16); 
-					pixel_D_blue_r  <= mem_data_s(15 downto 8); 
+					pixel_D_red_r   <= mem_data_s(23 downto 16); 
+					pixel_D_green_r <= mem_data_s(15 downto 8); 
+					pixel_D_blue_r  <= mem_data_s(7  downto 0); 
 			end case;
 		end if;
 	end process;
@@ -389,10 +391,8 @@ begin
 	x <= '0' & tmp_x(31 downto 1);
 	y <= '0' & tmp_y(31 downto 1);
 	
-	int_x <= x(28 downto 13) when x(28 downto 13) < src_w else
-				src_w-1;
-	int_y <= y(28 downto 13) when y(28 downto 13) < src_h else
-				src_h-1;
+	int_x <= x(28 downto 13);
+	int_y <= y(28 downto 13);
 	
 	diff_x <= "000" & x(12 downto 0);
 	diff_Y <= "000" & x(12 downto 0);
@@ -539,4 +539,6 @@ begin
 	o_red	  <= interpol_pix_red_r2;
 	o_green <= interpol_pix_green_r2;
 	o_blue  <= interpol_pix_blue_r2;
+	
+	rgb_o <= x"ff00ff";
 end Behavioral;

@@ -18,7 +18,46 @@ void sw_interpolator(
 
 	const int shift = 13;
 	const u16 fix_one = 0x1 << shift;
-
+	
+	/*for(int i = 0; i < src_mem_width*3; i++){
+		if(i%3 == 0){
+			printf("\nR : ");
+		}
+		
+		if(i%3 == 1){
+			printf("\nG : ");
+		}
+		
+		if(i%3 == 2){
+			printf("\nB : ");
+		}
+		
+		printf("%d", src_mem[i]);
+	}*/
+	
+	for(int i = 0; i < src_mem_width; i++){
+		printf("\nR : ");
+		printf("%d", src_mem[i*3]);
+		
+		printf("\nG : ");
+		printf("%d", src_mem[i*3+1]);
+		
+		printf("\nB : ");
+		printf("%d", src_mem[i*3+2]);
+	}
+	
+	printf("\nsrc_mem_width : %d", src_mem_width);
+	printf("\nzoom_x        : %d", zoom_x);
+	printf("\nzoom_y        : %d", zoom_y);
+	printf("\nsrc_x         : %d", src_x);
+	printf("\nsrc_y         : %d", src_y);
+	printf("\nsrc_w         : %d", src_w);
+	printf("\nsrc_h         : %d", src_h);
+	printf("\ndst_x         : %d", dst_x);
+	printf("\ndst_y         : %d", dst_y);
+	printf("\ndst_w         : %d", dst_w);
+	printf("\ndst_h         : %d", dst_h);
+	
 	for(u16 py = 0; py < HEIGHT; py++){
 		for(u16 px = 0; px < WIDTH; px++){
 			u8 r, g, b;
