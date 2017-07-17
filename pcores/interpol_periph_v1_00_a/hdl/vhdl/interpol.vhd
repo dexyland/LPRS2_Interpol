@@ -7,14 +7,14 @@ entity interpol is
    generic(
       DATA_WIDTH           : natural := 8;
       COLOR_WIDTH          : natural := 24;
-      ADDR_WIDTH           : natural := 13;
-      REGISTER_OFFSET      : natural := 5439;   -- 6960           -- Pointer to registers in memory map
-      C_BASEADDR           : natural := 0;               -- Pointer to local memory in memory map
-      REGISTER_NUMBER      : natural := 10;              -- Number of registers used for sprites
-      NUM_BITS_FOR_REG_NUM : natural := 4;               -- Number of bits required for number of registers
-      MAP_OFFSET           : natural := 639;            -- Pointer to start of map in memory
-      OVERHEAD             : natural := 5;               -- Number of overhead bits
-      SPRITE_Z             : natural := 1                -- Z coordinate of sprite
+      ADDR_WIDTH           : natural := 13
+      --REGISTER_OFFSET      : natural := 5439;   -- 6960           -- Pointer to registers in memory map
+      --C_BASEADDR           : natural := 0;               -- Pointer to local memory in memory map
+      --REGISTER_NUMBER      : natural := 10;              -- Number of registers used for sprites
+      --NUM_BITS_FOR_REG_NUM : natural := 4;               -- Number of bits required for number of registers
+      --MAP_OFFSET           : natural := 639;            -- Pointer to start of map in memory
+      --OVERHEAD             : natural := 5;               -- Number of overhead bits
+      --SPRITE_Z             : natural := 1                -- Z coordinate of sprite
 	);
 	
    Port (
@@ -48,7 +48,7 @@ architecture Behavioral of interpol is
    end component ram;
 
 	-- Types --
-   type registers_t  is array (0 to REGISTER_NUMBER-1) of unsigned (63 downto  0);
+   --type registers_t  is array (0 to REGISTER_NUMBER-1) of unsigned (63 downto  0);
 --   type coor_row_t 	 is array (0 to REGISTER_NUMBER-1) of unsigned (8 downto 0);
 --   type coor_col_t   is array (0 to REGISTER_NUMBER-1) of unsigned (9 downto 0);
 --   type pointer_t    is array (0 to REGISTER_NUMBER-1) of unsigned (15 downto 0);
@@ -76,8 +76,6 @@ architecture Behavioral of interpol is
 --    ( x"0130" & x"01e4" & x"8f" & x"00" & x"013f" ),
 --    ( x"0130" & x"01f3" & x"8f" & x"00" & x"013f" ),
 --    ( x"0000" & x"0090" & x"7f" & x"00" & x"03d0" )); --brick
-
-
 
 	signal src_x : 	unsigned(15 downto 0);
 	signal src_y : 	unsigned(15 downto 0); 
@@ -237,10 +235,6 @@ architecture Behavioral of interpol is
 	signal interpol_pix_red_s		  : unsigned(7 downto 0);
 	signal interpol_pix_green_s	  : unsigned(7 downto 0);
 	signal interpol_pix_blue_s		  : unsigned(7 downto 0);
-	
-	signal interpol_pix_red_sR		  : unsigned(7 downto 0);
-	signal interpol_pix_green_sR	  : unsigned(7 downto 0);
-	signal interpol_pix_blue_sR	  : unsigned(7 downto 0);
 
 -- correcting phase --
 	signal interpol_pix_red_r0		  : unsigned(7 downto 0);
@@ -255,16 +249,10 @@ architecture Behavioral of interpol is
 	signal interpol_pix_green_r2	  	: unsigned(7 downto 0);
 	signal interpol_pix_blue_r2		: unsigned(7 downto 0);
 	
---	signal interpol_pix_red_r3		  : std_logic-vector(DATA_WIDTH-1 downto 0);
---	signal interpol_pix_green_r3	  : std_logic-vector(DATA_WIDTH-1 downto 0);
---	signal interpol_pix_blue_r3		  : std_logic-vector(DATA_WIDTH-1 downto 0);
-	
 	--	Output values  --
 	signal o_red	: unsigned(7 downto 0);
 	signal o_green	: unsigned(7 downto 0);
 	signal o_blue	: unsigned(7 downto 0);
-
-	signal test_signal : unsigned(31 downto 0);
 	
 begin
     ---------------------
@@ -290,23 +278,23 @@ begin
 	----------------------
 	-- debug stuff --
 	
-	process(clk_i, rst_n_i)begin
-		if rising_edge(clk_i)then
-			if(rst_n_i = '0')then
+--	process(clk_i, rst_n_i)begin
+	--	if rising_edge(clk_i)then
+	--		if(rst_n_i = '0')then
 			   src_mem_width <= "0000000000000010";
 				src_x  <= "0000000000000000";
 				src_y  <= "0000000000000000";
-				src_w  <= "0000000000000010";
-				src_h  <= "0000000000000010";
+				src_w  <= "0000000000000100";
+				src_h  <= "0000000000000100";
 				dst_x  <= "0000000000000000";
 				dst_y  <= "0000000000000000";
-				dst_w  <= "0000000000000010";
-				dst_h  <= "0000000000000010";
+				dst_w  <= "0000000000000100";
+				dst_h  <= "0000000000000100";
 				zoom_x <= "0100000000000000";
 				zoom_y <= "0100000000000000";
-			end if;
-		end if;
-	end process;
+	--		end if;
+	--	end if;
+	--end process;
 	
 	with phase_i select
 		mem_addr_s <=
@@ -340,24 +328,24 @@ begin
 		if rising_edge(clk_i) then
 			case phase_i is
 				when "01" =>
-					pixel_A_red_r   <= mem_data_s(23 downto 16); 
+					pixel_A_red_r   <= mem_data_s(7  downto 0); 
 					pixel_A_green_r <= mem_data_s(15 downto 8); 
-					pixel_A_blue_r  <= mem_data_s(7  downto 0);
+					pixel_A_blue_r  <= mem_data_s(23 downto 16);
 					
 				when "10" =>
-					pixel_B_red_r   <= mem_data_s(23 downto 16); 
+					pixel_B_red_r   <= mem_data_s(7  downto 0); 
 					pixel_B_green_r <= mem_data_s(15 downto 8); 
-					pixel_B_blue_r  <= mem_data_s(7  downto 0); 
+					pixel_B_blue_r  <= mem_data_s(23 downto 16); 
 					
 				when "11" =>
-					pixel_C_red_r   <= mem_data_s(23 downto 16); 
+					pixel_C_red_r   <= mem_data_s(7  downto 0); 
 					pixel_C_green_r <= mem_data_s(15 downto 8); 
-					pixel_C_blue_r  <= mem_data_s(7  downto 0); 
+					pixel_C_blue_r  <= mem_data_s(23 downto 16); 
 			
 				when others =>
-					pixel_D_red_r   <= mem_data_s(23 downto 16); 
+					pixel_D_red_r   <= mem_data_s(7  downto 0); 
 					pixel_D_green_r <= mem_data_s(15 downto 8); 
-					pixel_D_blue_r  <= mem_data_s(7  downto 0); 
+					pixel_D_blue_r  <= mem_data_s(23 downto 16); 
 			end case;
 		end if;
 	end process;
@@ -391,8 +379,10 @@ begin
 	x <= '0' & tmp_x(31 downto 1);
 	y <= '0' & tmp_y(31 downto 1);
 	
-	int_x <= x(28 downto 13);
-	int_y <= y(28 downto 13);
+	int_x <= x(28 downto 13) when x(28 downto 13) < src_w else
+				src_w-1;
+	int_y <= y(28 downto 13) when y(28 downto 13) < src_h else
+				src_h-1;
 	
 	diff_x <= "000" & x(12 downto 0);
 	diff_Y <= "000" & x(12 downto 0);
@@ -507,10 +497,6 @@ begin
 	interpol_pix_red_s		<= pixel_A_multip_red_r   + pixel_B_multip_red_r   + pixel_C_multip_red_r   + pixel_D_multip_red_r;
 	interpol_pix_green_s	<= pixel_A_multip_green_r + pixel_B_multip_green_r + pixel_C_multip_green_r + pixel_D_multip_green_r;	  
 	interpol_pix_blue_s		<= pixel_A_multip_blue_r  + pixel_B_multip_blue_r  + pixel_C_multip_blue_r  + pixel_D_multip_blue_r;
-
-	--interpol_pix_red_sR 	<= interpol_pix_red_s   when phase_1 = "10" else interpol_pix_red_sR;
-	--interpol_pix_green_sR 	<= interpol_pix_green_s when phase_1 = "10" else interpol_pix_green_sR;
-	--interpol_pix_blue_sR 	<= interpol_pix_blue_s  when phase_1 = "10" else interpol_pix_blue_sR;
 	
 	process(clk_i) begin
 		if rising_edge(clk_i) then
@@ -540,5 +526,6 @@ begin
 	o_green <= interpol_pix_green_r2;
 	o_blue  <= interpol_pix_blue_r2;
 	
-	rgb_o <= x"ff00ff";
+	rgb_o <= std_logic_vector(o_blue & o_green & o_red);
+	
 end Behavioral;

@@ -41,14 +41,14 @@ BEGIN
 	 GENERIC MAP(
 				DATA_WIDTH           => 32,
 				COLOR_WIDTH          => 24,
-				ADDR_WIDTH           => 13,
-				REGISTER_OFFSET      => 6224,            -- Pointer to registers in memory map
-				C_BASEADDR           => 0,               -- Pointer to local memory in memory map
-				REGISTER_NUMBER      => 10,              -- Number of registers used for sprites
-				NUM_BITS_FOR_REG_NUM => 4,               -- Number of bits required for number of registers
-				MAP_OFFSET           => 1424,            -- Pointer to start of map in memory
-				OVERHEAD             => 5,               -- Number of overhead bits
-				SPRITE_Z             => 1                -- Z coordinate of sprite
+				ADDR_WIDTH           => 13
+				--REGISTER_OFFSET      => 6224,            -- Pointer to registers in memory map
+				--C_BASEADDR           => 0,               -- Pointer to local memory in memory map
+				--REGISTER_NUMBER      => 10,              -- Number of registers used for sprites
+				--NUM_BITS_FOR_REG_NUM => 4,               -- Number of bits required for number of registers
+				--MAP_OFFSET           => 1424,            -- Pointer to start of map in memory
+				--OVERHEAD             => 5,               -- Number of overhead bits
+				--SPRITE_Z             => 1                -- Z coordinate of sprite
 	 )
 	 PORT MAP(
 				clk_i  => clk,
@@ -96,8 +96,8 @@ BEGIN
 	ppm_file : process
 		file ppm_file : TEXT;
 		variable l_handle : line ;
-		variable P6    : string(1 to 2 ) := "P6";
-		variable name  : string(1 to 11) := "# ppm image";
+		variable P6    : string(1 to 2 ) := "P3";
+		variable name  : string(1 to 12) := "# vga output";
 		variable size  : string (1 to 7) := "640 480";
 		variable space : string (1 to 1) := " ";
 		variable scope : string (1 to 3) := "255";

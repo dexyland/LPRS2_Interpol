@@ -13,7 +13,7 @@
 int main() {
 	init_interpolator(0);
 
-#if 1 //DEV DEBUG
+#if 0 //DEV DEBUG
 #define W 2
 #define H 2
 	
@@ -50,10 +50,16 @@ int main() {
 
 	clear();
 
-	draw_tex(
+	/*draw_tex(
 		t,
 		0, 0, interpol_kitten.width, interpol_kitten.height,
 		200, 100, interpol_kitten.width*3.5, interpol_kitten.height*1.5
+	);*/
+	
+	draw_tex(
+		t,
+		0, 0, interpol_kitten.width, interpol_kitten.height,
+		0, 0, interpol_kitten.width, interpol_kitten.height
 	);
 #endif
 	

@@ -10,13 +10,13 @@
          <ClosedNode>/axi_lite_ipif - imp C:|Xilinx|14.6|ISE_DS|EDK|hw|XilinxProcessorIPLib|pcores|axi_lite_ipif_v1_01_a|hdl|vhdl|axi_lite_ipif.vhd</ClosedNode>
       </ClosedNodes>
       <SelectedItems>
-         <SelectedItem>interpol_standalone - IMP (C:/materija/tmp/LPRS2_Interpol/pcores/interpol_periph_v1_00_a/devl/projnav/interpol_standalone.vhd)</SelectedItem>
+         <SelectedItem>interpol_i - interpol - Behavioral (C:/materija/tmp/LPRS2_Interpol/pcores/interpol_periph_v1_00_a/hdl/vhdl/interpol.vhd)</SelectedItem>
       </SelectedItems>
       <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
       <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
       <ViewHeaderState orientation="horizontal" >000000ff0000000000000001000000010000000000000000000000000000000002020000000100000001000000640000019b000000020000000000000000000000000200000064ffffffff0000008100000003000000020000019b0000000100000003000000000000000100000003</ViewHeaderState>
       <UserChangedColumnWidths orientation="horizontal" >true</UserChangedColumnWidths>
-      <CurrentItem>interpol_standalone - IMP (C:/materija/tmp/LPRS2_Interpol/pcores/interpol_periph_v1_00_a/devl/projnav/interpol_standalone.vhd)</CurrentItem>
+      <CurrentItem>interpol_i - interpol - Behavioral (C:/materija/tmp/LPRS2_Interpol/pcores/interpol_periph_v1_00_a/hdl/vhdl/interpol.vhd)</CurrentItem>
    </ItemView>
    <ItemView engineview="SynthesisOnly" sourcetype="DESUT_VHDL_ARCHITECTURE" guiview="Process" >
       <ClosedNodes>
@@ -28,13 +28,13 @@
          <ClosedNode>User Constraints</ClosedNode>
       </ClosedNodes>
       <SelectedItems>
-         <SelectedItem></SelectedItem>
+         <SelectedItem>Check Syntax</SelectedItem>
       </SelectedItems>
       <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
       <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
-      <ViewHeaderState orientation="horizontal" >000000ff00000000000000010000000100000000000000000000000000000000000000000000000196000000010000000100000000000000000000000064ffffffff000000810000000000000001000001960000000100000000</ViewHeaderState>
+      <ViewHeaderState orientation="horizontal" >000000ff0000000000000001000000010000000000000000000000000000000000000000000000011b000000010000000100000000000000000000000064ffffffff0000008100000000000000010000011b0000000100000000</ViewHeaderState>
       <UserChangedColumnWidths orientation="horizontal" >false</UserChangedColumnWidths>
-      <CurrentItem></CurrentItem>
+      <CurrentItem>Check Syntax</CurrentItem>
    </ItemView>
    <ItemView guiview="File" >
       <ClosedNodes>
@@ -110,12 +110,12 @@
          <ClosedNodesVersion>1</ClosedNodesVersion>
       </ClosedNodes>
       <SelectedItems>
-         <SelectedItem></SelectedItem>
+         <SelectedItem>Simulate Behavioral Model</SelectedItem>
       </SelectedItems>
       <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
       <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
-      <ViewHeaderState orientation="horizontal" >000000ff000000000000000100000001000000000000000000000000000000000000000000000000c9000000010000000100000000000000000000000064ffffffff000000810000000000000001000000c90000000100000000</ViewHeaderState>
+      <ViewHeaderState orientation="horizontal" >000000ff0000000000000001000000010000000000000000000000000000000000000000000000011b000000010000000100000000000000000000000064ffffffff0000008100000000000000010000011b0000000100000000</ViewHeaderState>
       <UserChangedColumnWidths orientation="horizontal" >false</UserChangedColumnWidths>
-      <CurrentItem></CurrentItem>
+      <CurrentItem>Simulate Behavioral Model</CurrentItem>
    </ItemView>
 </Project>

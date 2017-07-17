@@ -35,16 +35,11 @@ void sw_interpolator(
 		printf("%d", src_mem[i]);
 	}*/
 	
-	for(int i = 0; i < src_mem_width; i++){
-		printf("\nR : ");
-		printf("%d", src_mem[i*3]);
-		
-		printf("\nG : ");
-		printf("%d", src_mem[i*3+1]);
-		
-		printf("\nB : ");
-		printf("%d", src_mem[i*3+2]);
-	}
+	/*for(int i = 0; i < 59*89; i+=3){
+		printf("\nBGR[%d] : ", i/3);
+
+		printf("%x %x %x", src_mem[i*3 + 2], src_mem[i*3 + 1], src_mem[i*3]);
+	}*/
 	
 	printf("\nsrc_mem_width : %d", src_mem_width);
 	printf("\nzoom_x        : %d", zoom_x);

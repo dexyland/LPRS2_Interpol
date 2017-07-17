@@ -1,4 +1,3 @@
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
@@ -30,7 +29,6 @@ architecture arch of ram is
 	signal mem : ram_t := (
 
 --	***** COLOR PALLETE *****
-
 
 		0 =>	x"000000FF", -- R: 255 G: 0 B: 0
 		1 =>	x"0000FF00", -- R: 0 G: 255 B: 0
@@ -5488,7 +5486,6 @@ architecture arch of ram is
 		others => x"00000000"
 	);
 
-
 begin
 
 	process(i_clk)
@@ -5503,5 +5500,5 @@ begin
 			
 		end if; 
 	end process;
-
+	
 end architecture arch;
