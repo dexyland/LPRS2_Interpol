@@ -76,7 +76,6 @@ xst/
 *.xml
 _ngo/
 *.bgn
-.bit
 *.bld
 *.drc
 *.ngc
