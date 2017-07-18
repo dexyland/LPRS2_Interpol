@@ -529,7 +529,13 @@ begin
 	o_blue  <= interpol_pix_blue_r2;
 	
 	
-	rgb_o <= std_logic_vector(o_blue & o_green & o_red) when (px <= dst_w + 1) and (py < dst_h) else
-				x"000000";
+	rgb_o <= std_logic_vector(o_blue & o_green & o_red) when (px <= dst_w + 1) and (py < dst_h) else x"000000";
+--	rgb_o <= 
+--		x"000000" when pixel_col_i < 640/80*1 else
+--		x"0000ff" when pixel_col_i < 640/80*2 else
+--		x"00ff00" when pixel_col_i < 640/80*3 else
+--		x"ff0000" when pixel_col_i < 640/80*4 else
+--		x"00ffff" when pixel_col_i < 640/80*5 else
+--		x"ffffff";
 	
 end Behavioral;

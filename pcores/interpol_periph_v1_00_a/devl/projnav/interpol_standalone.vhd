@@ -82,6 +82,7 @@ begin
 			phase_i			=> phase_s,
 			rgb_o				=> rgb_s
 		);
+--rgb_s <= x"ff00ff";
     -- Same as in interpol_periph ABOVE THIS LINE ------------------
 	 
 
