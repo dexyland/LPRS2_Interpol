@@ -137,6 +137,4 @@ BEGIN
 		file_close(ppm_file);
 		wait;
 	end process ppm_file;
-	
-
 END;
