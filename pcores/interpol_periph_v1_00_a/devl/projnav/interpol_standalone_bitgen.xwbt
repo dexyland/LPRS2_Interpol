@@ -1,0 +1,8 @@
+INTSTYLE=ise
+INFILE=C:\materija\tmp\LPRS2_Interpol\pcores\interpol_periph_v1_00_a\devl\projnav\interpol_standalone.ncd
+OUTFILE=C:\materija\tmp\LPRS2_Interpol\pcores\interpol_periph_v1_00_a\devl\projnav\interpol_standalone.bit
+FAMILY=Spartan6
+PART=xc6slx45-2fgg676
+WORKINGDIR=C:\materija\tmp\LPRS2_Interpol\pcores\interpol_periph_v1_00_a\devl\projnav
+LICENSE=ISE
+USER_INFO=209858334_178080923_210593072_268

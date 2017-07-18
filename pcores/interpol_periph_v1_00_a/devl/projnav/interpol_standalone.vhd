@@ -1,4 +1,6 @@
-
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 entity interpol_standalone is
   port
@@ -43,7 +45,7 @@ architecture IMP of interpol_standalone is
 	
 begin
 
-	vga_ctrl_i : entity vga_ctrl
+	vga_ctrl_i : entity work.vga_ctrl
 		port map
 		(
 			i_clk_100MHz   => clk_100MHz,
@@ -67,7 +69,7 @@ begin
 			on_pow_save		=> pow_save_on
 		);
 		
-	interpol_i : entity interpol
+	interpol_i : entity work.interpol
 		port map
 		(
 			clk_i				=> clk_100MHz,
@@ -83,7 +85,7 @@ begin
     -- Same as in interpol_periph ABOVE THIS LINE ------------------
 	 
 
-	clk_gen: entity clk_gen_100MHz
+	clk_gen: entity work.clk_gen_100MHz
 	port map(
 		i_clk_24MHz  => clk_24MHz_i,
 		in_reset     => rst_in,

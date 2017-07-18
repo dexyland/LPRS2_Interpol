@@ -18,40 +18,22 @@ void sw_interpolator(
 
 	const int shift = 13;
 	const u16 fix_one = 0x1 << shift;
-	
-	/*for(int i = 0; i < src_mem_width*3; i++){
-		if(i%3 == 0){
-			printf("\nR : ");
-		}
-		
-		if(i%3 == 1){
-			printf("\nG : ");
-		}
-		
-		if(i%3 == 2){
-			printf("\nB : ");
-		}
-		
-		printf("%d", src_mem[i]);
-	}*/
-	
-	/*for(int i = 0; i < 59*89; i+=3){
-		printf("\nBGR[%d] : ", i/3);
 
-		printf("%x %x %x", src_mem[i*3 + 2], src_mem[i*3 + 1], src_mem[i*3]);
-	}*/
-	
-	printf("\nsrc_mem_width : %d", src_mem_width);
-	printf("\nzoom_x        : %d", zoom_x);
-	printf("\nzoom_y        : %d", zoom_y);
-	printf("\nsrc_x         : %d", src_x);
-	printf("\nsrc_y         : %d", src_y);
-	printf("\nsrc_w         : %d", src_w);
-	printf("\nsrc_h         : %d", src_h);
-	printf("\ndst_x         : %d", dst_x);
-	printf("\ndst_y         : %d", dst_y);
-	printf("\ndst_w         : %d", dst_w);
-	printf("\ndst_h         : %d", dst_h);
+	// For debuging.
+	for(int i = 0; i < 59*89; i++){
+		printf("\t\t%5d => x\"00%04x%04x%04x\",\n", i, pB(src_mem[i]), pG(src_mem[i]), pR(src_mem[i]));
+	}
+	printf("src_mem_width <= x\"%04x\";\n", src_mem_width);
+	printf("zoom_x        <= x\"%04x\";\n", zoom_x);
+	printf("zoom_y        <= x\"%04x\";\n", zoom_y);
+	printf("src_x         <= x\"%04x\";\n", src_x);
+	printf("src_y         <= x\"%04x\";\n", src_y);
+	printf("src_w         <= x\"%04x\";\n", src_w);
+	printf("src_h         <= x\"%04x\";\n", src_h);
+	printf("dst_x         <= x\"%04x\";\n", dst_x);
+	printf("dst_y         <= x\"%04x\";\n", dst_y);
+	printf("dst_w         <= x\"%04x\";\n", dst_w);
+	printf("dst_h         <= x\"%04x\";\n", dst_h);
 	
 	for(u16 py = 0; py < HEIGHT; py++){
 		for(u16 px = 0; px < WIDTH; px++){
@@ -82,11 +64,11 @@ void sw_interpolator(
 					int_y = src_h-1;
 				}
 			
-				u8 inc_x = 1;
+				u16 inc_x = 1;
 				if (int_x == src_w-1){
 					inc_x = 0;
 				}
-				u8 inc_y = src_mem_width; // tex.width
+				u16 inc_y = src_mem_width; // tex.width
 				if (int_y == src_h-1){
 					inc_y = 0;
 				}

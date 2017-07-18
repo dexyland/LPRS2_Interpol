@@ -5,7 +5,7 @@ use IEEE.STD_LOGIC_UNSIGNED.all;
 
 entity interpol is
    generic(
-      DATA_WIDTH           : natural := 8;
+      DATA_WIDTH           : natural := 32;
       COLOR_WIDTH          : natural := 24;
       ADDR_WIDTH           : natural := 13
       --REGISTER_OFFSET      : natural := 5439;   -- 6960           -- Pointer to registers in memory map
@@ -22,7 +22,7 @@ entity interpol is
       rst_n_i        : in  std_logic;
 		-- RAM
       bus_addr_i     : in  std_logic_vector(ADDR_WIDTH-1 downto 0);  -- Address used to point to registers
-      bus_data_i     : in  std_logic_vector(DATA_WIDTH-1 downto 0);  -- Data to be writed to registers
+      bus_data_i     : in  std_logic_vector(31 downto 0);  			   -- Data to be writed to registers
       bus_we_i       : in  std_logic;
 		--ram_clk_o		: out std_logic;											-- Same clock domain
 		-- VGA --
@@ -105,8 +105,8 @@ architecture Behavioral of interpol is
 	
 	signal int_x : unsigned(15 downto 0);
 	signal int_y : unsigned(15 downto 0);
-	signal inc_x : unsigned(7 downto 0);
-	signal inc_y : unsigned(7 downto 0);
+	signal inc_x : unsigned(15 downto 0);
+	signal inc_y : unsigned(15 downto 0);
 	signal src_mem_width : unsigned(15 downto 0);
 	
 -- Addresses for mux --
@@ -126,7 +126,7 @@ architecture Behavioral of interpol is
 	signal mem_addr_r   :  unsigned(ADDR_WIDTH-1 downto 0);
 	signal mem_addr_s   :  unsigned(ADDR_WIDTH-1 downto 0);
 	
---signal mem_data_r : std_logic_vector(DATA_WIDTH-1 downto 0);--
+	signal mem_data_tmp : std_logic_vector(DATA_WIDTH-1 downto 0);--
 	signal mem_data_s : unsigned(DATA_WIDTH-1 downto 0);
 
 -- pixel values (taken from the ram at corresponding phase 'value')-- 
@@ -281,17 +281,17 @@ begin
 --	process(clk_i, rst_n_i)begin
 	--	if rising_edge(clk_i)then
 	--		if(rst_n_i = '0')then
-			   src_mem_width <= "0000000000000010";
-				src_x  <= "0000000000000000";
-				src_y  <= "0000000000000000";
-				src_w  <= "0000000000000100";
-				src_h  <= "0000000000000100";
-				dst_x  <= "0000000000000000";
-				dst_y  <= "0000000000000000";
-				dst_w  <= "0000000000000100";
-				dst_h  <= "0000000000000100";
-				zoom_x <= "0100000000000000";
-				zoom_y <= "0100000000000000";
+	src_mem_width <= x"003b";
+	zoom_x        <= x"4000";
+	zoom_y        <= x"4000";
+	src_x         <= x"0000";
+	src_y         <= x"0000";
+	src_w         <= x"003b";
+	src_h         <= x"0059";
+	dst_x         <= x"0000";
+	dst_y         <= x"0000";
+	dst_w         <= x"003b";
+	dst_h         <= x"0059";
 	--		end if;
 	--	end if;
 	--end process;
@@ -316,8 +316,10 @@ begin
 		i_data				=> bus_data_i,
 		i_we					=> bus_we_i,
 		i_w_addr				=> bus_addr_i,
-		unsigned(o_data)	=> mem_data_s
-	);		
+		o_data            => mem_data_tmp
+	);
+	mem_data_s <= unsigned(mem_data_tmp);
+	
 	
 -- unos odgovarajucih vrednosti iz rama u reg --
 
@@ -345,7 +347,7 @@ begin
 				when others =>
 					pixel_D_red_r   <= mem_data_s(7  downto 0); 
 					pixel_D_green_r <= mem_data_s(15 downto 8); 
-					pixel_D_blue_r  <= mem_data_s(23 downto 16); 
+					pixel_D_blue_r  <= mem_data_s(23 downto 16);
 			end case;
 		end if;
 	end process;
@@ -387,8 +389,8 @@ begin
 	diff_x <= "000" & x(12 downto 0);
 	diff_Y <= "000" & x(12 downto 0);
 				
-	inc_x <= "00000001" when int_x = src_w-1 else "00000000";
-	inc_y <= src_mem_width when int_y = src_h-1 else "00000000";
+	inc_x <= x"0001" when int_x = src_w-1 else x"0000";
+	inc_y <= src_mem_width when int_y = src_h-1 else x"0000";
 				
 	addr_base <= int_y*src_mem_width;
 	
@@ -526,6 +528,8 @@ begin
 	o_green <= interpol_pix_green_r2;
 	o_blue  <= interpol_pix_blue_r2;
 	
-	rgb_o <= std_logic_vector(o_blue & o_green & o_red);
+	
+	rgb_o <= std_logic_vector(o_blue & o_green & o_red) when (px <= dst_w + 1) and (py < dst_h) else
+				x"000000";
 	
 end Behavioral;

@@ -107,7 +107,7 @@ BEGIN
 		variable blue  : integer;
 	begin
 
-		file_open(ppm_file,"out.ppm",write_mode);
+		file_open(ppm_file, "out.ppm", write_mode);
 
 		write(l_handle,P6);
 		writeline(ppm_file,l_handle);
@@ -118,7 +118,9 @@ BEGIN
 		write(l_handle,scope);
 		writeline(ppm_file,l_handle);
 
-		loop
+		wait for 120 ns;
+		
+		for i in 1 to 640*480 loop
 			wait until(rising_edge(clk));
 			if phase = 0 then
 				red   := to_integer(unsigned(rgb( 7 downto  0)));
@@ -133,6 +135,7 @@ BEGIN
 			end if;
 		end loop;
 		file_close(ppm_file);
+		wait;
 	end process ppm_file;
 	
 

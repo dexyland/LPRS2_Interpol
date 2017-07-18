@@ -22,12 +22,55 @@
   <sourceproject xmlns="http://www.xilinx.com/XMLSchema" xil_pn:fileType="FILE_XISE" xil_pn:name="interpol_periph.xise"/>
 
   <files xmlns="http://www.xilinx.com/XMLSchema">
+    <file xil_pn:fileType="FILE_DIRECTORY" xil_pn:name="_ngo"/>
+    <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/bitgen.xmsgs"/>
+    <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/map.xmsgs"/>
+    <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/ngdbuild.xmsgs"/>
+    <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/par.xmsgs"/>
+    <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/trce.xmsgs"/>
     <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/xst.xmsgs"/>
     <file xil_pn:fileType="FILE_LOG" xil_pn:name="fuse.log"/>
     <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="interpol.prj"/>
     <file xil_pn:fileType="FILE_XST_STX" xil_pn:name="interpol.stx"/>
     <file xil_pn:fileType="FILE_XST" xil_pn:name="interpol.xst"/>
     <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_ISIM_EXE" xil_pn:name="interpol_isim_beh.exe"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_BITGEN_REPORT" xil_pn:name="interpol_standalone.bgn" xil_pn:subbranch="FPGAConfiguration"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_BIT" xil_pn:name="interpol_standalone.bit" xil_pn:subbranch="FPGAConfiguration"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGDBUILD_LOG" xil_pn:name="interpol_standalone.bld"/>
+    <file xil_pn:fileType="FILE_CMD_LOG" xil_pn:name="interpol_standalone.cmd_log"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_BITGEN_DRC" xil_pn:name="interpol_standalone.drc" xil_pn:subbranch="FPGAConfiguration"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_LSO" xil_pn:name="interpol_standalone.lso"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NCD" xil_pn:name="interpol_standalone.ncd" xil_pn:subbranch="Par"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGC" xil_pn:name="interpol_standalone.ngc"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGD" xil_pn:name="interpol_standalone.ngd"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGR" xil_pn:name="interpol_standalone.ngr"/>
+    <file xil_pn:fileType="FILE_PAD_MISC" xil_pn:name="interpol_standalone.pad"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_PAR_REPORT" xil_pn:name="interpol_standalone.par" xil_pn:subbranch="Par"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_PCF" xil_pn:name="interpol_standalone.pcf" xil_pn:subbranch="Map"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="interpol_standalone.prj"/>
+    <file xil_pn:fileType="FILE_TRCE_MISC" xil_pn:name="interpol_standalone.ptwx"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_STX" xil_pn:name="interpol_standalone.stx"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_REPORT" xil_pn:name="interpol_standalone.syr"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_TIMING_TXT_REPORT" xil_pn:name="interpol_standalone.twr" xil_pn:subbranch="Par"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_TIMING_XML_REPORT" xil_pn:name="interpol_standalone.twx" xil_pn:subbranch="Par"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_UNROUTES" xil_pn:name="interpol_standalone.unroutes" xil_pn:subbranch="Par"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_BITGEN_REPORT" xil_pn:name="interpol_standalone.ut" xil_pn:subbranch="FPGAConfiguration"/>
+    <file xil_pn:fileType="FILE_XPI" xil_pn:name="interpol_standalone.xpi"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST" xil_pn:name="interpol_standalone.xst"/>
+    <file xil_pn:fileType="FILE_NCD" xil_pn:name="interpol_standalone_guide.ncd" xil_pn:origination="imported"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_MAP_REPORT" xil_pn:name="interpol_standalone_map.map" xil_pn:subbranch="Map"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_MAP_REPORT" xil_pn:name="interpol_standalone_map.mrp" xil_pn:subbranch="Map"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NCD" xil_pn:name="interpol_standalone_map.ncd" xil_pn:subbranch="Map"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGM" xil_pn:name="interpol_standalone_map.ngm" xil_pn:subbranch="Map"/>
+    <file xil_pn:fileType="FILE_XRPT" xil_pn:name="interpol_standalone_map.xrpt"/>
+    <file xil_pn:fileType="FILE_XRPT" xil_pn:name="interpol_standalone_ngdbuild.xrpt"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_PAD_EXCEL_REPORT" xil_pn:name="interpol_standalone_pad.csv" xil_pn:subbranch="Par"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_PAD_TXT_REPORT" xil_pn:name="interpol_standalone_pad.txt" xil_pn:subbranch="Par"/>
+    <file xil_pn:fileType="FILE_XRPT" xil_pn:name="interpol_standalone_par.xrpt"/>
+    <file xil_pn:fileType="FILE_HTML" xil_pn:name="interpol_standalone_summary.html"/>
+    <file xil_pn:fileType="FILE_FITTER_REPORT" xil_pn:name="interpol_standalone_summary.xml"/>
+    <file xil_pn:fileType="FILE_WEBTALK" xil_pn:name="interpol_standalone_usage.xml"/>
+    <file xil_pn:fileType="FILE_XRPT" xil_pn:name="interpol_standalone_xst.xrpt"/>
     <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="interpol_stx_beh.prj"/>
     <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="interpol_tb_beh.prj"/>
     <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_ISIM_EXE" xil_pn:name="interpol_tb_isim_beh.exe"/>
@@ -38,7 +81,11 @@
     <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_LOG" xil_pn:name="isim.log"/>
     <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_ISIM_EXE" xil_pn:name="ram_isim_beh.exe"/>
     <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="ram_stx_beh.prj"/>
+    <file xil_pn:fileType="FILE_HTML" xil_pn:name="usage_statistics_webtalk.html"/>
+    <file xil_pn:fileType="FILE_LOG" xil_pn:name="webtalk.log"/>
+    <file xil_pn:fileType="FILE_FITTER_REPORT" xil_pn:name="webtalk_pn.xml"/>
     <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_INI" xil_pn:name="xilinxsim.ini"/>
+    <file xil_pn:fileType="FILE_DIRECTORY" xil_pn:name="xlnx_auto_0_xdb"/>
     <file xil_pn:fileType="FILE_DIRECTORY" xil_pn:name="xst"/>
   </files>
 
@@ -47,9 +94,13 @@
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1500291847" xil_pn:in_ck="215700232377138414" xil_pn:name="TRAN_copyAbstractToPostAbstractSimulation" xil_pn:start_ts="1500291847">
+    <transform xil_pn:end_ts="1500378277" xil_pn:in_ck="215700232377138414" xil_pn:name="TRAN_copyAbstractToPostAbstractSimulation" xil_pn:start_ts="1500378277">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForInputs"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="InputChanged"/>
+      <status xil_pn:value="OutputChanged"/>
       <outfile xil_pn:name="../../hdl/vhdl/clk_gen_100MHz_a.vhd"/>
       <outfile xil_pn:name="../../hdl/vhdl/clk_gen_100MHz_e.vhd"/>
       <outfile xil_pn:name="../../hdl/vhdl/interpol.vhd"/>
@@ -60,11 +111,11 @@
       <outfile xil_pn:name="interpol_standalone.vhd"/>
       <outfile xil_pn:name="interpol_tb.vhd"/>
     </transform>
-    <transform xil_pn:end_ts="1500291437" xil_pn:name="TRAN_xawsToSimhdl" xil_pn:prop_ck="4529801073779870338" xil_pn:start_ts="1500291437">
+    <transform xil_pn:end_ts="1500377602" xil_pn:name="TRAN_xawsToSimhdl" xil_pn:prop_ck="4529801073779870338" xil_pn:start_ts="1500377602">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1500291437" xil_pn:name="TRAN_schematicsToHdlSim" xil_pn:prop_ck="-5273727757501077952" xil_pn:start_ts="1500291437">
+    <transform xil_pn:end_ts="1500377602" xil_pn:name="TRAN_schematicsToHdlSim" xil_pn:prop_ck="-5273727757501077952" xil_pn:start_ts="1500377602">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
@@ -72,9 +123,14 @@
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1500291847" xil_pn:in_ck="215700232377138414" xil_pn:name="TRAN_copyPostAbstractToPreSimulation" xil_pn:start_ts="1500291847">
+    <transform xil_pn:end_ts="1500378279" xil_pn:in_ck="215700232377138414" xil_pn:name="TRAN_copyPostAbstractToPreSimulation" xil_pn:start_ts="1500378279">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForInputs"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="InputChanged"/>
+      <status xil_pn:value="OutputChanged"/>
       <outfile xil_pn:name="../../hdl/vhdl/clk_gen_100MHz_a.vhd"/>
       <outfile xil_pn:name="../../hdl/vhdl/clk_gen_100MHz_e.vhd"/>
       <outfile xil_pn:name="../../hdl/vhdl/interpol.vhd"/>
@@ -85,10 +141,13 @@
       <outfile xil_pn:name="interpol_standalone.vhd"/>
       <outfile xil_pn:name="interpol_tb.vhd"/>
     </transform>
-    <transform xil_pn:end_ts="1500291851" xil_pn:in_ck="215700232377138414" xil_pn:name="TRAN_ISimulateBehavioralModelRunFuse" xil_pn:prop_ck="-1387662679925437232" xil_pn:start_ts="1500291847">
+    <transform xil_pn:end_ts="1500378282" xil_pn:in_ck="215700232377138414" xil_pn:name="TRAN_ISimulateBehavioralModelRunFuse" xil_pn:prop_ck="-1387662679925437232" xil_pn:start_ts="1500378279">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForInputs"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
       <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="InputChanged"/>
       <status xil_pn:value="OutputChanged"/>
       <outfile xil_pn:name="fuse.log"/>
       <outfile xil_pn:name="interpol_tb_beh.prj"/>
@@ -97,14 +156,121 @@
       <outfile xil_pn:name="isim.log"/>
       <outfile xil_pn:name="xilinxsim.ini"/>
     </transform>
-    <transform xil_pn:end_ts="1500291851" xil_pn:in_ck="-5832919465281244928" xil_pn:name="TRAN_ISimulateBehavioralModel" xil_pn:prop_ck="-6155366650552787843" xil_pn:start_ts="1500291851">
+    <transform xil_pn:end_ts="1500378283" xil_pn:in_ck="-5832919465281244928" xil_pn:name="TRAN_ISimulateBehavioralModel" xil_pn:prop_ck="-6155366650552787843" xil_pn:start_ts="1500378282">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
       <status xil_pn:value="OutOfDateForOutputs"/>
       <status xil_pn:value="OutputChanged"/>
       <outfile xil_pn:name="interpol_tb_isim_beh.wdb"/>
       <outfile xil_pn:name="isim.cmd"/>
       <outfile xil_pn:name="isim.log"/>
+    </transform>
+    <transform xil_pn:end_ts="1500378375" xil_pn:name="TRAN_copyInitialToXSTAbstractSynthesis" xil_pn:start_ts="1500378375">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1500378375" xil_pn:name="TRAN_schematicsToHdl" xil_pn:prop_ck="-4352314292115683895" xil_pn:start_ts="1500378375">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1500378375" xil_pn:name="TRAN_regenerateCores" xil_pn:prop_ck="-2696051313449859270" xil_pn:start_ts="1500378375">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1500378375" xil_pn:name="TRAN_SubProjectAbstractToPreProxy" xil_pn:start_ts="1500378375">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1500378375" xil_pn:name="TRAN_xawsTohdl" xil_pn:prop_ck="11423526501842187" xil_pn:start_ts="1500378375">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1500378375" xil_pn:name="TRAN_SubProjectPreToStructuralProxy" xil_pn:prop_ck="8977612015859452503" xil_pn:start_ts="1500378375">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1500378375" xil_pn:name="TRAN_platgen" xil_pn:prop_ck="-6307510605598577020" xil_pn:start_ts="1500378375">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1500378688" xil_pn:in_ck="3470994367678587004" xil_pn:name="TRANEXT_xstsynthesize_spartan6" xil_pn:prop_ck="-3926079776754684983" xil_pn:start_ts="1500378677">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="WarningsGenerated"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="OutputChanged"/>
+      <outfile xil_pn:name="_xmsgs/xst.xmsgs"/>
+      <outfile xil_pn:name="interpol_standalone.lso"/>
+      <outfile xil_pn:name="interpol_standalone.ngc"/>
+      <outfile xil_pn:name="interpol_standalone.ngr"/>
+      <outfile xil_pn:name="interpol_standalone.prj"/>
+      <outfile xil_pn:name="interpol_standalone.stx"/>
+      <outfile xil_pn:name="interpol_standalone.syr"/>
+      <outfile xil_pn:name="interpol_standalone.xst"/>
+      <outfile xil_pn:name="interpol_standalone_xst.xrpt"/>
+      <outfile xil_pn:name="webtalk_pn.xml"/>
+      <outfile xil_pn:name="xst"/>
+    </transform>
+    <transform xil_pn:end_ts="1500378415" xil_pn:name="TRAN_compileBCD2" xil_pn:prop_ck="4404798285426884406" xil_pn:start_ts="1500378415">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1500378696" xil_pn:in_ck="-9116083984771677733" xil_pn:name="TRANEXT_ngdbuild_FPGA" xil_pn:prop_ck="9044468180770969339" xil_pn:start_ts="1500378688">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="_ngo"/>
+      <outfile xil_pn:name="_xmsgs/ngdbuild.xmsgs"/>
+      <outfile xil_pn:name="interpol_standalone.bld"/>
+      <outfile xil_pn:name="interpol_standalone.ngd"/>
+      <outfile xil_pn:name="interpol_standalone_ngdbuild.xrpt"/>
+    </transform>
+    <transform xil_pn:end_ts="1500378716" xil_pn:in_ck="-9116083984771677732" xil_pn:name="TRANEXT_map_spartan6" xil_pn:prop_ck="-2489532510156203999" xil_pn:start_ts="1500378696">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="WarningsGenerated"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="_xmsgs/map.xmsgs"/>
+      <outfile xil_pn:name="interpol_standalone.pcf"/>
+      <outfile xil_pn:name="interpol_standalone_map.map"/>
+      <outfile xil_pn:name="interpol_standalone_map.mrp"/>
+      <outfile xil_pn:name="interpol_standalone_map.ncd"/>
+      <outfile xil_pn:name="interpol_standalone_map.ngm"/>
+      <outfile xil_pn:name="interpol_standalone_map.xrpt"/>
+      <outfile xil_pn:name="interpol_standalone_summary.xml"/>
+      <outfile xil_pn:name="interpol_standalone_usage.xml"/>
+    </transform>
+    <transform xil_pn:end_ts="1500378733" xil_pn:in_ck="-1263231885085450507" xil_pn:name="TRANEXT_par_spartan6" xil_pn:prop_ck="-3829590541433901613" xil_pn:start_ts="1500378716">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="_xmsgs/par.xmsgs"/>
+      <outfile xil_pn:name="interpol_standalone.ncd"/>
+      <outfile xil_pn:name="interpol_standalone.pad"/>
+      <outfile xil_pn:name="interpol_standalone.par"/>
+      <outfile xil_pn:name="interpol_standalone.ptwx"/>
+      <outfile xil_pn:name="interpol_standalone.unroutes"/>
+      <outfile xil_pn:name="interpol_standalone.xpi"/>
+      <outfile xil_pn:name="interpol_standalone_pad.csv"/>
+      <outfile xil_pn:name="interpol_standalone_pad.txt"/>
+      <outfile xil_pn:name="interpol_standalone_par.xrpt"/>
+    </transform>
+    <transform xil_pn:end_ts="1500378747" xil_pn:in_ck="-9116083984771677864" xil_pn:name="TRANEXT_bitFile_spartan6" xil_pn:prop_ck="5341574683187206424" xil_pn:start_ts="1500378733">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="_xmsgs/bitgen.xmsgs"/>
+      <outfile xil_pn:name="interpol_standalone.bgn"/>
+      <outfile xil_pn:name="interpol_standalone.bit"/>
+      <outfile xil_pn:name="interpol_standalone.drc"/>
+      <outfile xil_pn:name="interpol_standalone.ut"/>
+      <outfile xil_pn:name="usage_statistics_webtalk.html"/>
+      <outfile xil_pn:name="webtalk.log"/>
+      <outfile xil_pn:name="webtalk_pn.xml"/>
+    </transform>
+    <transform xil_pn:end_ts="1500378733" xil_pn:in_ck="-9116083984771677864" xil_pn:name="TRAN_postRouteTrce" xil_pn:prop_ck="445577401284416184" xil_pn:start_ts="1500378728">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="_xmsgs/trce.xmsgs"/>
+      <outfile xil_pn:name="interpol_standalone.twr"/>
+      <outfile xil_pn:name="interpol_standalone.twx"/>
     </transform>
   </transforms>
 
